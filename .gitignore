@@ -13,4 +13,7 @@ auth.json
 npm-debug.log
 yarn-error.log
 /.idea
+/public/backend
+/public/frontend
+/public/uploads
 /.vscode
