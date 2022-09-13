@@ -12,7 +12,6 @@ $warnings = Session::get('warning');
         </div>
     @endforeach
 @endif
-
 @if ($messages)
     @foreach ($messages as $key => $value)
         <div class="alert alert-success alert-dismissible" role="alert">
@@ -21,7 +20,6 @@ $warnings = Session::get('warning');
         </div>
     @endforeach
 @endif
-
 @if ($info)
     @foreach ($info as $key => $value)
         <div class="alert alert-info alert-dismissible" role="alert">
@@ -30,7 +28,6 @@ $warnings = Session::get('warning');
         </div>
     @endforeach
 @endif
-
 @if ($warnings)
     @foreach ($warnings as $key => $value)
         <div class="alert alert-warning alert-dismissible" role="alert">
