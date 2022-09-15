@@ -39,6 +39,9 @@
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"> {{ $category->name }} </option>
                                 @endforeach
+                                {{-- @foreach ($categories as $key => $category)
+                                    <option value="{{ $key }}"> {{ $category }} </option>
+                                @endforeach --}}
                             </select>
                             @error('parent_id')
                                 {{ $message }}

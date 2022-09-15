@@ -44,6 +44,13 @@
                                         <option value="{{ $category->id }}"> {{ $category->name }} </option>
                                     @endif
                                 @endforeach
+                                {{-- @foreach ($categories as $key => $category)
+                                    @if ($targetCategory->parent_id == $key)
+                                        <option value="{{ $key }}" selected> {{ $category }} </option>
+                                    @else
+                                        <option value="{{ $key }}"> {{ $category }} </option>
+                                    @endif
+                                @endforeach --}}
                             </select>
                             @error('parent_id')
                                 {{ $message }}
