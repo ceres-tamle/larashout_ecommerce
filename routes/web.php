@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +17,4 @@ Auth::routes();
 
 require 'admin.php';
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'site.pages.homepage');

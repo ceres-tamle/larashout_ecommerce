@@ -1,7 +1,6 @@
-// import './bootstrap';
-
-// change
 window._ = require('lodash');
+// import _ from 'lodash';
+// window._ = _;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -18,6 +17,8 @@ window.Vue = require('vue');
  */
 
 window.axios = require('axios');
+// import axios from 'axios';
+// window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -61,4 +62,3 @@ Vue.component('product-attributes', require('./components/ProductAttributes.vue'
 const app = new Vue({
     el: '#app'
 });
-// change
