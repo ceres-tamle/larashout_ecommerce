@@ -53,7 +53,6 @@
                     </article>
                 </aside>
             </div>
-            <!-- row.// -->
             <br>
         </section>
         <section class="footer-bottom row border-top-white">
@@ -64,12 +63,9 @@
             <div class="col-sm-6">
                 <p class="text-md-right text-white-50">
                     Copyright &copy
-                    <br>
-                    <a href="http://bootstrap-ecommerce.com" class="text-white-50">Bootstrap-ecommerce UI kit</a>
+                    <a href="http://bootstrap-ecommerce.com" class="text-white-50">Bootstrap Ecommerce UI Kit</a>
                 </p>
             </div>
         </section>
-        <!-- //footer-top -->
     </div>
-    <!-- //container -->
 </footer>

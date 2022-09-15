@@ -13,7 +13,6 @@
     <!-- Scripts -->
     @routes
     @vite('resources/js/app.js')
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     @inertiaHead
 </head>
 
