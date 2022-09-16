@@ -18,19 +18,26 @@ Auth::routes();
 require 'admin.php';
 
 Route::view('/', 'site.pages.homepage');
-Route::get('/category/{slug}', 'Site\CategoryController@show')->name('category.show');
-Route::get('/product/{slug}', 'Site\ProductController@show')->name('product.show');
 
-Route::post('/product/add/cart', 'Site\ProductController@addToCart')->name('product.add.cart');
-Route::get('/cart', 'Site\CartController@getCart')->name('checkout.cart');
-Route::get('/cart/item/{id}/remove', 'Site\CartController@removeItem')->name('checkout.cart.remove');
-Route::get('/cart/clear', 'Site\CartController@clearCart')->name('checkout.cart.clear');
+// Category
+Route::get('/category/{slug}', [App\Http\Controllers\Site\CategoryController::class, 'show'])->name('category.show');
+
+// Product
+Route::get('/product/{slug}', [App\Http\Controllers\Site\ProductController::class, 'show'])->name('product.show');
+Route::post('/product/add/cart', [App\Http\Controllers\Site\ProductController::class, 'addToCart'])->name('product.add.cart');
+
+// Cart
+Route::get('/cart', [App\Http\Controllers\Site\CartController::class, 'getCart'])->name('checkout.cart');
+Route::get('/cart/item/{id}/remove', [App\Http\Controllers\Site\CartController::class, 'removeItem'])->name('checkout.cart.remove');
+Route::get('/cart/clear', [App\Http\Controllers\Site\CartController::class, 'clearCart'])->name('checkout.cart.clear');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/checkout', 'Site\CheckoutController@getCheckout')->name('checkout.index');
-    Route::post('/checkout/order', 'Site\CheckoutController@placeOrder')->name('checkout.place.order');
 
-    Route::get('checkout/payment/complete', 'Site\CheckoutController@complete')->name('checkout.payment.complete');
+    // Checkout
+    Route::get('/checkout', [App\Http\Controllers\Site\CheckoutController::class, 'getCheckout'])->name('checkout.index');
+    Route::post('/checkout/order', [App\Http\Controllers\Site\CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
+    Route::get('checkout/payment/complete', [App\Http\Controllers\Site\CheckoutController::class, 'complete'])->name('checkout.payment.complete');
 
-    Route::get('account/orders', 'Site\AccountController@getOrders')->name('account.orders');
+    // Account
+    Route::get('account/orders', [App\Http\Controllers\Site\AccountController::class, 'getOrders'])->name('account.orders');
 });

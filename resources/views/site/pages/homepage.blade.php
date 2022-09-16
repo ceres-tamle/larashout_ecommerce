@@ -2,5 +2,7 @@
 @section('title', 'Homepage')
 
 @section('content')
-    <h2>Homepage</h2>
+    <div class="container">
+        <h2>Homepage</h2>
+    </div>
 @stop
