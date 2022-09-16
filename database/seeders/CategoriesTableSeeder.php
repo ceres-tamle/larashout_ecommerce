@@ -15,14 +15,14 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         Category::create([
-            // 'name'          =>  'Root',
-            // 'description'   =>  'This is the root category, don\'t delete this one',
-            // 'parent_id'     =>  null,
-            // 'menu'          =>  0,
-            'name' => fake()->name,
-            'description' => fake()->realText(100),
-            'parent_id'     =>  1,
+            'name'          =>  'Root',
+            'description'   =>  'This is the root category, don\'t delete this one',
+            'parent_id'     =>  null,
             'menu'          =>  0,
+            // 'name' => fake()->name,
+            // 'description' => fake()->realText(100),
+            // 'parent_id'     =>  1,
+            // 'menu'          =>  0,
         ]);
 
         // factory(App\Models\Supplier::class, 10)->create();
