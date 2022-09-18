@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Config;
+use Config;
 
 class SettingServiceProvider extends ServiceProvider
 {
