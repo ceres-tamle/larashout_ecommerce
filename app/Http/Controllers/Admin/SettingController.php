@@ -11,7 +11,7 @@ use Illuminate\Http\UploadedFile;
 class SettingController extends BaseController
 {
     use UploadAble;
-    
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
