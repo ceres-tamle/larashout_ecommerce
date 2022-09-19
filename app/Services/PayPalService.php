@@ -45,12 +45,15 @@ class PayPalService
     {
         // Add shipping amount if you want to charge for shipping
         $shipping = sprintf('%0.2f', 0);
+        // dd($shipping);
         // Add any tax amount if you want to apply any tax rule
         $tax = sprintf('%0.2f', 0);
+        // dd($tax);
 
         // Create a new instance of Payer class
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
+        // dd($payer);
 
         // Adding items to the list
         $items = array();
@@ -63,21 +66,25 @@ class PayPalService
 
             array_push($items, $orderItems[$item->id]);
         }
+        // dd($items);
 
         $itemList = new ItemList();
         $itemList->setItems($items);
+        // dd($itemList);
 
         // Setting Shipping Details
         $details = new Details();
         $details->setShipping($shipping)
             ->setTax($tax)
             ->setSubtotal(sprintf('%0.2f', $order->grand_total));
+        // dd($details);
 
         // Create chargeable amount
         $amount = new Amount();
         $amount->setCurrency(config('settings.currency_code'))
             ->setTotal(sprintf('%0.2f', $order->grand_total))
             ->setDetails($details);
+        // dd($amount);
 
         // Creating a transaction
         $transaction = new Transaction();
@@ -85,11 +92,13 @@ class PayPalService
             ->setItemList($itemList)
             ->setDescription($order->user->full_name)
             ->setInvoiceNumber($order->order_number);
+        // dd($transaction);
 
         // Setting up redirection urls
         $redirectUrls = new RedirectUrls();
         $redirectUrls->setReturnUrl(route('checkout.payment.complete'))
             ->setCancelUrl(route('checkout.index'));
+        // dd($redirectUrls);
 
         // Creating payment instance
         $payment = new Payment();
@@ -97,9 +106,9 @@ class PayPalService
             ->setPayer($payer)
             ->setRedirectUrls($redirectUrls)
             ->setTransactions(array($transaction));
+        // dd($payment);
 
         try {
-
             $payment->create($this->payPal);
         } catch (PayPalConnectionException $exception) {
             echo $exception->getCode(); // Prints the Error Code

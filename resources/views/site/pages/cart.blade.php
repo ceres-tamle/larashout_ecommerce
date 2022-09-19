@@ -92,8 +92,12 @@
                             <br> Lorem ipsum dolor
                         </div>
                     </figure>
-                    <a href="{{ route('checkout.index') }}" class="btn btn-success btn-lg btn-block">Proceed To
-                        Checkout</a>
+                    @if ((int) Cart::getSubTotal() !== 0)
+                        <a href="{{ route('checkout.index') }}" class="btn btn-success btn-lg btn-block">Proceed To
+                            Checkout</a>
+                    @else
+                        <p class="alert alert-warning">Nothing to Checkout</p>
+                    @endif
                 </aside>
             </div>
         </div>

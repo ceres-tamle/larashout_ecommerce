@@ -21,11 +21,11 @@ class OrderRepository extends BaseRepository implements OrderContract
         $order = Order::create([
             'order_number'      =>  'ORD-' . strtoupper(uniqid()),
             'user_id'           =>  auth()->user()->id,
-            'status'            =>  'pending',
+            'status'            =>  'processing',
             'grand_total'       =>  Cart::getSubTotal(),
             'item_count'        =>  Cart::getTotalQuantity(),
             'payment_status'    =>  0,
-            'payment_method'    =>  null,
+            'payment_method'    =>  'COD',
             'first_name'        =>  $params['first_name'],
             'last_name'         =>  $params['last_name'],
             'address'           =>  $params['address'],
