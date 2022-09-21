@@ -9,6 +9,7 @@ use App\Contracts\ProductContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class ProductRepository
@@ -128,5 +129,26 @@ class ProductRepository extends BaseRepository implements ProductContract
         $product = Product::where('slug', $slug)->first();
 
         return $product;
+    }
+
+    public function findProductByFeatured()
+    {
+        $featured = Product::where('featured', 1)->get();
+
+        return $featured;
+    }
+
+    public function filterProductByDescPrice()
+    {
+        $descPrice = DB::table('products')->orderBy('price', 'desc')->get();
+        // dd($descprice);
+        return $descPrice;
+    }
+
+    public function filterProductByAscPrice()
+    {
+        $ascPrice = DB::table('products')->orderBy('price', 'asc')->get();
+        // dd($ascPrice);
+        return $ascPrice;
     }
 }

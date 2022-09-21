@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\UserController;
 
 Route::group(['prefix' => 'admin'], function () {
 
@@ -72,6 +73,16 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('attributes/add', [App\Http\Controllers\Admin\ProductAttributeController::class, 'addAttribute']);
             // Delete product attribute from the current product
             Route::post('attributes/delete', [App\Http\Controllers\Admin\ProductAttributeController::class, 'deleteAttribute']);
+        });
+
+        Route::group(['prefix' => 'users'], function () {
+
+            Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+            Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
+            Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+            Route::post('/update', [UserController::class, 'update'])->name('admin.users.update');
+            Route::get('/delete/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
         });
     });
 });

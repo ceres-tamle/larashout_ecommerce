@@ -45,4 +45,10 @@ interface ProductContract
      * @return mixed
      */
     public function findProductBySlug($slug);
+
+    public function findProductByFeatured();
+
+    public function filterProductByDescPrice();
+
+    public function filterProductByAscPrice();
 }

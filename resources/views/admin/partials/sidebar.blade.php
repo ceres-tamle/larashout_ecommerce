@@ -43,5 +43,19 @@
                 <span class="app-menu__label">Products</span>
             </a>
         </li>
+        {{-- <li>
+            <a class="app-menu__item {{ Route::currentRouteName() == 'admin.orders.index' ? 'active' : '' }}"
+                href="{{ route('admin.orders.index') }}">
+                <i class="app-menu__icon fa fa-shopping-bag"></i>
+                <span class="app-menu__label">Orders</span>
+            </a>
+        </li> --}}
+        <li>
+            <a class="app-menu__item {{ Route::currentRouteName() == 'admin.users.index' ? 'active' : '' }}"
+                href="{{ route('admin.users.index') }}">
+                <i class="app-menu__icon fa fa-user"></i>
+                <span class="app-menu__label">Users</span>
+            </a>
+        </li>
     </ul>
 </aside>

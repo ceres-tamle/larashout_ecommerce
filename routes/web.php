@@ -17,7 +17,9 @@ Auth::routes();
 
 require 'admin.php';
 
-Route::view('/', 'site.pages.homepage');
+Route::get('/', [App\Http\Controllers\Site\HomeController::class, 'show']);
+Route::get('/desc/price', [App\Http\Controllers\Site\HomeController::class, 'descPrice'])->name('home.desc.price');
+Route::get('/asc/price', [App\Http\Controllers\Site\HomeController::class, 'ascPrice'])->name('home.asc.price');
 
 // Category
 Route::get('/category/{slug}', [App\Http\Controllers\Site\CategoryController::class, 'show'])->name('category.show');

@@ -2,7 +2,7 @@
 @section('title')
     {{ $pageTitle }}
 @endsection
-=@section('content')
+@section('content')
     <div class="app-title">
         <div>
             <h1><i class="fa fa-shopping-bag"></i> {{ $pageTitle }} - {{ $subTitle }}</h1>
@@ -99,8 +99,8 @@
                                         <div class="form-group">
                                             <label class="control-label" for="sale_price">Special Price</label>
                                             <input class="form-control" type="text"
-                                                placeholder="Enter product special price" id="sale_price"
-                                                name="sale_price" value="{{ old('sale_price') }}" />
+                                                placeholder="Enter product special price" id="sale_price" name="sale_price"
+                                                value="{{ old('sale_price') }}" />
                                         </div>
                                     </div>
                                 </div>
