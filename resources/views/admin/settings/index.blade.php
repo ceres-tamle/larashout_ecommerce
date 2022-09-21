@@ -11,7 +11,7 @@
         </div>
     </div>
     @include('admin.partials.flash')
-    <div class="row user">
+    <div class="row">
         <div class="col-md-3">
             <div class="tile p-0">
                 <ul class="nav flex-column nav-tabs user-tabs">

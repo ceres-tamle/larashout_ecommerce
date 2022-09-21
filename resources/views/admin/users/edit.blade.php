@@ -9,7 +9,7 @@
         </div>
     </div>
     @include('admin.partials.flash')
-    <div class="row user">
+    <div class="row">
         <div class="col-md-3">
             <div class="tile p-0">
                 <ul class="nav flex-column nav-tabs user-tabs">
@@ -38,7 +38,7 @@
                             <div class="tile-body">
                                 <div class="row">
                                     {{-- Id --}}
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <label class="control-label">Id</label>
                                         <div class="form-group">
                                             <input class="form-control" type="text" name="id" value="{{ old('id', $user->id) }}" readonly/>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="row">
                                     {{-- First Name --}}
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">First Name</label>
                                             <input class="form-control @error('first_name') is-invalid @enderror"
@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
                                     {{-- Last Name --}}
-                                    <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Last Name</label>
                                             <input class="form-control @error('last_name') is-invalid @enderror"

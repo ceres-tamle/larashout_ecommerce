@@ -1,1 +1,7 @@
-View -> Route -> Controller -> Function -> Service
+- Check error: View -> Route -> Controller -> Function -> Service
+
+-
+1. Set up Route
+2. Set up View
+3. Handle Controller
+4. Tranfer data to View

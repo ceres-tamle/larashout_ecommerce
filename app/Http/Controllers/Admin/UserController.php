@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Contracts\UserContract;
 use App\Http\Controllers\BaseController;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Laravel\Ui\Presets\React;
-use Session;
 use App\Models\User;
 use Hash;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends BaseController
 {
@@ -27,10 +24,14 @@ class UserController extends BaseController
         // $this->setPageTitle('Users', 'Users List');
         // return view('admin.users.index', compact('users'));
 
-        $users = User::all(); // fetch all user from database
-        $this->setPageTitle('Users', 'Users List');
-        return view('admin.users.index', ['users' => $users]);
-        // ['table' => $users]
+        try {
+            $users = User::all(); // fetch all user from database
+            $this->setPageTitle('Users', 'Users List');
+            return view('admin.users.index', ['users' => $users]);
+            // ['table' => $users]
+        } catch (ModelNotFoundException $ex) {
+            return $ex->getMessage();
+        }
     }
 
     public function create()
