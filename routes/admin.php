@@ -1,14 +1,22 @@
 <?php
 
+use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ProductAttributeController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::get('login', [App\Http\Controllers\Admin\LoginController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('admin.login.post');
-    Route::get('logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('admin.logout');
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('login', [LoginController::class, 'login'])->name('admin.login.post');
+    Route::get('logout', [LoginController::class, 'logout'])->name('admin.logout');
 
     Route::group(['middleware' => ['auth:admin']], function () {
 
@@ -16,64 +24,65 @@ Route::group(['prefix' => 'admin'], function () {
             return view('admin.dashboard.index');
         })->name('admin.dashboard');
 
-        Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings');
-        Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('admin.settings.update');
+        Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings');
+        Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 
         Route::group(['prefix' => 'categories'], function () {
 
-            Route::get('/', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('admin.categories.index');
-            Route::get('/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('admin.categories.create');
-            Route::post('/store', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('admin.categories.store');
-            Route::get('/{id}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('admin.categories.edit');
-            Route::post('/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('admin.categories.update');
-            Route::get('/{id}/delete', [App\Http\Controllers\Admin\CategoryController::class, 'delete'])->name('admin.categories.delete');
+            Route::get('/', [CategoryController::class, 'index'])->name('admin.categories.index');
+            Route::get('/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+            Route::post('/store', [CategoryController::class, 'store'])->name('admin.categories.store');
+            Route::get('/{id}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+            Route::post('/update', [CategoryController::class, 'update'])->name('admin.categories.update');
+            Route::get('/{id}/delete', [CategoryController::class, 'delete'])->name('admin.categories.delete');
         });
 
         Route::group(['prefix' => 'attributes'], function () {
 
-            Route::get('/', [App\Http\Controllers\Admin\AttributeController::class, 'index'])->name('admin.attributes.index');
-            Route::get('/create', [App\Http\Controllers\Admin\AttributeController::class, 'create'])->name('admin.attributes.create');
-            Route::post('/store', [App\Http\Controllers\Admin\AttributeController::class, 'store'])->name('admin.attributes.store');
-            Route::get('/{id}/edit', [App\Http\Controllers\Admin\AttributeController::class, 'edit'])->name('admin.attributes.edit');
-            Route::post('/update', [App\Http\Controllers\Admin\AttributeController::class, 'update'])->name('admin.attributes.update');
-            Route::get('/{id}/delete', [App\Http\Controllers\Admin\AttributeController::class, 'delete'])->name('admin.attributes.delete');
+            Route::get('/', [AttributeController::class, 'index'])->name('admin.attributes.index');
+            Route::get('/create', [AttributeController::class, 'create'])->name('admin.attributes.create');
+            Route::post('/store', [AttributeController::class, 'store'])->name('admin.attributes.store');
+            Route::get('/{id}/edit', [AttributeController::class, 'edit'])->name('admin.attributes.edit');
+            Route::post('/update', [AttributeController::class, 'update'])->name('admin.attributes.update');
+            Route::get('/{id}/delete', [AttributeController::class, 'delete'])->name('admin.attributes.delete');
 
-            Route::post('/get-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'getValues']);
-            Route::post('/add-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'addValues']);
-            Route::post('/update-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'updateValues']);
-            Route::post('/delete-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'deleteValues']);
+            Route::post('/get-values', [AttributeValueController::class, 'getValues']);
+            Route::post('/add-values', [AttributeValueController::class, 'addValues']);
+            Route::post('/update-values', [AttributeValueController::class, 'updateValues']);
+            Route::post('/delete-values', [AttributeValueController::class, 'deleteValues']);
         });
 
         Route::group(['prefix' => 'brands'], function () {
 
-            Route::get('/', [App\Http\Controllers\Admin\BrandController::class, 'index'])->name('admin.brands.index');
-            Route::get('/create', [App\Http\Controllers\Admin\BrandController::class, 'create'])->name('admin.brands.create');
-            Route::post('/store', [App\Http\Controllers\Admin\BrandController::class, 'store'])->name('admin.brands.store');
-            Route::get('/{id}/edit', [App\Http\Controllers\Admin\BrandController::class, 'edit'])->name('admin.brands.edit');
-            Route::post('/update', [App\Http\Controllers\Admin\BrandController::class, 'update'])->name('admin.brands.update');
-            Route::get('/{id}/delete', [App\Http\Controllers\Admin\BrandController::class, 'delete'])->name('admin.brands.delete');
+            Route::get('/', [BrandController::class, 'index'])->name('admin.brands.index');
+            Route::get('/create', [BrandController::class, 'create'])->name('admin.brands.create');
+            Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
+            Route::get('/{id}/edit', [BrandController::class, 'edit'])->name('admin.brands.edit');
+            Route::post('/update', [BrandController::class, 'update'])->name('admin.brands.update');
+            Route::get('/{id}/delete', [BrandController::class, 'delete'])->name('admin.brands.delete');
         });
 
         Route::group(['prefix' => 'products'], function () {
 
-            Route::get('/', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('admin.products.index');
-            Route::get('/create', [App\Http\Controllers\Admin\ProductController::class, 'create'])->name('admin.products.create');
-            Route::post('/store', [App\Http\Controllers\Admin\ProductController::class, 'store'])->name('admin.products.store');
-            Route::get('/edit/{id}', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('admin.products.edit');
-            Route::post('/update', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('admin.products.update');
-            Route::post('images/upload', [App\Http\Controllers\Admin\ProductImageController::class, 'upload'])->name('admin.products.images.upload');
-            Route::get('images/{id}/delete', [App\Http\Controllers\Admin\ProductImageController::class, 'delete'])->name('admin.products.images.delete');
+            Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
+            Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
+            Route::post('/store', [ProductController::class, 'store'])->name('admin.products.store');
+            Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
+            Route::post('/update', [ProductController::class, 'update'])->name('admin.products.update');
+
+            Route::post('images/upload', [ProductImageController::class, 'upload'])->name('admin.products.images.upload');
+            Route::get('images/{id}/delete', [ProductImageController::class, 'delete'])->name('admin.products.images.delete');
 
             // Load attributes on the page load
-            Route::get('attributes/load', [App\Http\Controllers\Admin\ProductAttributeController::class, 'loadAttributes']);
+            Route::get('attributes/load', [ProductAttributeController::class, 'loadAttributes']);
             // Load product attributes on the page load
-            Route::post('attributes', [App\Http\Controllers\Admin\ProductAttributeController::class, 'productAttributes']);
+            Route::post('attributes', [ProductAttributeController::class, 'productAttributes']);
             // Load option values for a attribute
-            Route::post('attributes/values', [App\Http\Controllers\Admin\ProductAttributeController::class, 'loadValues']);
+            Route::post('attributes/values', [ProductAttributeController::class, 'loadValues']);
             // Add product attribute to the current product
-            Route::post('attributes/add', [App\Http\Controllers\Admin\ProductAttributeController::class, 'addAttribute']);
+            Route::post('attributes/add', [ProductAttributeController::class, 'addAttribute']);
             // Delete product attribute from the current product
-            Route::post('attributes/delete', [App\Http\Controllers\Admin\ProductAttributeController::class, 'deleteAttribute']);
+            Route::post('attributes/delete', [ProductAttributeController::class, 'deleteAttribute']);
         });
 
         Route::group(['prefix' => 'orders'], function () {
@@ -89,6 +98,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'users'], function () {
 
             Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+            Route::get('/search', [UserController::class, 'search'])->name('admin.users.search');
             Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
             Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
             Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');

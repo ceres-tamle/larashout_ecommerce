@@ -2,7 +2,7 @@
     <section class="header-main">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="brand-wrap">
                         <a href="{{ url('/') }}">
                             <img class="logo" src="{{ asset('frontend/images/logo-dark.png') }}" alt="logo">
@@ -10,9 +10,11 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-6">
-                    <form action="#" class="search-wrap">
+                    <form action="{{ route('home.filter.price') }}" class="search-wrap" method="GET">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" name="min_price" placeholder="From price">
+                            <input type="text" class="form-control" name="max_price" placeholder="To price">
+                            {{-- <input type="text" class="form-control" name="product" placeholder="Product"> --}}
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-search"></i>
@@ -21,7 +23,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-3 col-sm-6">
+                <div class="col-lg-4 col-sm-6">
                     <div class="widgets-wrap d-flex justify-content-end">
                         <div class="widget-header">
                             <a href="{{ route('checkout.cart') }}" class="icontext">

@@ -1,13 +1,14 @@
 @extends('admin.app')
-@section('title')
-    {{ $pageTitle }}
-@endsection
 @section('content')
     <div class="app-title">
-        <div>
-            <h1><i class="fa fa-tags"></i> {{ $pageTitle }}</h1>
-            <p>{{ $subTitle }}</p>
-        </div>
+        <li class="app-search">
+            <form action="{{ route('admin.users.search') }}" method="GET">
+                <input class="app-search__input" type="search" name="email" placeholder="Search email" />
+                <button class="app-search__button" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+        </li>
         <a href="{{ route('admin.users.create') }}" class="btn btn-primary pull-right">Add User</a>
     </div>
     @include('admin.partials.flash')
@@ -25,8 +26,9 @@
                                 <th class="text-center"> Address </th>
                                 <th class="text-center"> City </th>
                                 <th class="text-center"> Country </th>
-                                <th style="width:100px; min-width:100px;" class="text-center text-danger"><i
-                                        class="fa fa-bolt"></i></th>
+                                <th style="width:100px; min-width:100px;" class="text-center text-danger">
+                                    <i class="fa fa-bolt"></i>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,9 +44,13 @@
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Second group">
                                             <a href="{{ route('admin.users.edit', $user->id) }}"
-                                                class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                                class="btn btn-sm btn-primary">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
                                             <a href="{{ route('admin.users.delete', $user->id) }}"
-                                                class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                                class="btn btn-sm btn-danger">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>

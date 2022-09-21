@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Laravel\Ui\Presets\React;
 
 class UserController extends BaseController
 {
@@ -32,6 +33,15 @@ class UserController extends BaseController
         } catch (ModelNotFoundException $ex) {
             return $ex->getMessage();
         }
+    }
+
+    public function search(Request $request)
+    {
+        $email = $request->input('email');
+        $users = User::where('email', 'LIKE', "%$email%")->get();
+        // $users = User::search("$email")->get();
+        // $users = User::like('email', "%$email%")->get();
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()

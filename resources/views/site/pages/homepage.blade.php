@@ -70,8 +70,8 @@
                                 @endforeach
                             </div>
                         </div> --}}
-                        <a href="{{ Route('home.desc.price') }}" class="">Soft by high price</a><br>
-                        <a href="{{ Route('home.asc.price') }}" class="">Soft by low price</a>
+                        <a href="{{ Route('home.desc.price') }}" class="">Soft by high original price</a><br>
+                        <a href="{{ Route('home.asc.price') }}" class="">Soft by low original price</a>
                     </div>
                     <div class="col-9">
                         <div class="row">

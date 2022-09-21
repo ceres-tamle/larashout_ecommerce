@@ -31,6 +31,16 @@ class HomeController extends Controller
         return view('site.pages.homepage', compact('products', 'categories', 'featured'));
     }
 
+    public function filter(Request $request)
+    {
+        $min_price = $request->input('min_price');
+        $max_price = $request->input('max_price');
+        $filter = Product::select('*')
+            ->whereBetween('price', [$min_price, $max_price])
+            ->get();
+        return view('site.pages.filterprice', compact('filter'));
+    }
+
     public function descPrice()
     {
         // $descPrice = $this->productRepository->filterProductByDescPrice();
