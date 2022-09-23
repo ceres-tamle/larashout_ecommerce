@@ -12,9 +12,14 @@
                 <div class="col-sm-12">
                     @if (Session::has('message'))
                         <p class="alert alert-success">{{ Session::get('message') }}</p>
+                    @elseif (Session::has('error'))
+                        <p class="alert alert-danger">{{ Session::get('error') }}</p>
                     @endif
                 </div>
             </div>
+        </div>
+
+        <div class="container">
             <div class="row">
                 <main class="col-sm-9">
                     @if (\Cart::isEmpty())
@@ -59,7 +64,9 @@
                                             </td>
                                             <td class="text-right">
                                                 <a href="{{ route('checkout.cart.remove', $item->id) }}"
-                                                    class="btn btn-outline-danger"><i class="fa fa-times"></i> </a>
+                                                    class="btn btn-outline-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -68,37 +75,107 @@
                         </div>
                     @endif
                 </main>
-                <aside class="col-sm-3">
-                    <a href="{{ route('checkout.cart.clear') }}" class="btn btn-danger btn-block mb-4">Clear Cart</a>
-                    <p class="alert alert-success">Add USD 5.00 of eligible items to your order to qualify for FREE
-                        Shipping. </p>
-                    <dl class="dlist-align h4">
-                        <dt>Total:</dt>
-                        <dd class="text-right">
-                            <strong>{{ config('settings.currency_symbol') }}{{ \Cart::getSubTotal() }}</strong>
-                        </dd>
-                    </dl>
-                    <hr>
-                    <figure class="itemside mb-3">
-                        <aside class="aside"><img src="{{ asset('frontend/images/icons/pay-visa.png') }}"></aside>
-                        <div class="text-wrap small text-muted">
-                            Pay 84.78 AED ( Save 14.97 AED ) By using ADCB Cards
-                        </div>
-                    </figure>
-                    <figure class="itemside mb-3">
-                        <aside class="aside"> <img src="{{ asset('frontend/images/icons/pay-mastercard.png') }}"> </aside>
-                        <div class="text-wrap small text-muted">
-                            Pay by MasterCard and Save 40%.
-                            <br> Lorem ipsum dolor
-                        </div>
-                    </figure>
-                    @if ((int) Cart::getSubTotal() !== 0)
-                        <a href="{{ route('checkout.index') }}" class="btn btn-success btn-lg btn-block">Proceed To
-                            Checkout</a>
-                    @else
-                        <p class="alert alert-warning">Nothing to Checkout</p>
-                    @endif
-                </aside>
+
+                @if (!Cart::isEmpty())
+                    <aside class="col-sm-3">
+                        <a href="{{ route('checkout.cart.clear') }}" class="btn btn-danger btn-block mb-4">Clear Cart</a>
+                        <dl class="dlist-align h4">
+                            <dt>Total:</dt>
+                            <dd class="text-right">
+                                <strong>{{ \Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}</strong>
+                            </dd>
+                        </dl>
+
+                        @if (Session::get('coupon_code') !== null)
+                            <dl class="dlist-align h4">
+                                <dt>Coupon:</dt>
+                                <dd class="text-right">
+                                    <strong>
+                                        @if (Session::get('coupon_code'))
+                                            @foreach (Session::get('coupon_code') as $key => $coupon)
+                                                {{-- Discount Percent --}}
+                                                @if (isset($coupon['condition']) && $coupon['condition'] == 1)
+                                                    {{ $coupon['number'] }} %
+                                                    {{-- Discount Value --}}
+                                                @elseif(isset($coupon['condition']) && $coupon['condition'] == 2)
+                                                    {{ number_format($coupon['number'], 0, ',', '.') }} đ
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </strong>
+                                </dd>
+                            </dl>
+
+                            <dl class="dlist-align h4">
+                                <dt>Discount:</dt>
+                                <dd class="text-right">
+                                    <strong>
+                                        @if (Session::get('discount_percent') !== null)
+                                            {{ Session::get('discount_percent') }} đ
+                                        @elseif (Session::get('discount_value') !== null)
+                                            {{ Session::get('discount_value') }} đ
+                                        @endif
+                                    </strong>
+                                </dd>
+                            </dl>
+
+                            <dl class="dlist-align h4">
+                                <dt>Pay:</dt>
+                                <dd class="text-right">
+                                    <strong>
+                                        @if (Session::get('pay_percent') !== null)
+                                            {{ Session::get('pay_percent') }} đ
+                                        @elseif (Session::get('pay_value') !== null)
+                                            {{ Session::get('pay_value') }} đ
+                                        @endif
+                                    </strong>
+                                </dd>
+                            </dl>
+                        @endif
+                        <hr>
+
+                        @if (Session::get('coupon_code') === null)
+                            <form action="{{ route('coupon.check') }}" class="itemside mb-3" method="POST">
+                                @csrf
+                                <aside class="aside">
+                                    <button type="submit" class="btn btn-success">Apply</button>
+                                </aside>
+                                <div class="text-wrap small text-muted">
+                                    <input type="text" name="coupon_code" class="form-control" placeholder="Coupon Code">
+                                </div>
+                            </form>
+                        @endif
+
+                        @if (Session::get('coupon_code') !== null)
+                            <form action="{{ route('coupon.cancel') }}" class="itemside mb-3" method="POST">
+                                @csrf
+                                <aside class="aside">
+                                    <button type="submit" class="btn btn-warning">Cancel Apply</button>
+                                </aside>
+                            </form>
+                        @endif
+
+                        <figure class="itemside mb-3">
+                            <aside class="aside"><img src="{{ asset('frontend/images/icons/pay-visa.png') }}"></aside>
+                            <div class="text-wrap small text-muted">
+                                Pay 84.78 AED ( Save 14.97 AED ) By using ADCB Cards
+                            </div>
+                        </figure>
+                        <figure class="itemside mb-3">
+                            <aside class="aside"> <img src="{{ asset('frontend/images/icons/pay-mastercard.png') }}">
+                            </aside>
+                            <div class="text-wrap small text-muted">
+                                Pay by MasterCard and Save 40%. <br> Lorem ipsum dolor
+                            </div>
+                        </figure>
+
+                        @if ((int) Cart::getSubTotal() !== 0)
+                            <a href="{{ route('checkout.index') }}" class="btn btn-success btn-lg btn-block">
+                                Proceed To Checkout
+                            </a>
+                        @endif
+                    </aside>
+                @endif
             </div>
         </div>
     </section>

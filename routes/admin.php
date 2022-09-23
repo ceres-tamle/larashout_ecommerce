@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductAttributeController;
@@ -93,6 +94,16 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/edit/{id}', [OrderController::class, 'edit'])->name('admin.orders.edit');
             Route::post('/update', [OrderController::class, 'update'])->name('admin.orders.update');
             Route::get('/delete/{id}', [OrderController::class, 'delete'])->name('admin.orders.delete');
+        });
+
+        Route::group(['prefix' => 'coupons'], function () {
+
+            Route::get('/', [CouponController::class, 'index'])->name('admin.coupons.index');
+            Route::get('/create', [CouponController::class, 'create'])->name('admin.coupons.create');
+            Route::post('/store', [CouponController::class, 'store'])->name('admin.coupons.store');
+            Route::get('/edit/{id}', [CouponController::class, 'edit'])->name('admin.coupons.edit');
+            Route::post('/update', [CouponController::class, 'update'])->name('admin.coupons.update');
+            Route::get('/delete/{id}', [CouponController::class, 'delete'])->name('admin.coupons.delete');
         });
 
         Route::group(['prefix' => 'users'], function () {

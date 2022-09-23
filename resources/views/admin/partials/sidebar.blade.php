@@ -51,6 +51,13 @@
             </a>
         </li>
         <li>
+            <a class="app-menu__item {{ Route::currentRouteName() == 'admin.coupons.index' ? 'active' : '' }}"
+                href="{{ route('admin.coupons.index') }}">
+                <i class="app-menu__icon fa fa-bomb"></i>
+                <span class="app-menu__label">Coupons</span>
+            </a>
+        </li>
+        <li>
             <a class="app-menu__item {{ Route::currentRouteName() == 'admin.users.index' ? 'active' : '' }}"
                 href="{{ route('admin.users.index') }}">
                 <i class="app-menu__icon fa fa-user"></i>

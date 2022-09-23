@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Contracts\AttributeContract;
 use App\Contracts\CategoryContract;
 use App\Contracts\ProductContract;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Repositories\ProductRepository;
-use GuzzleHttp\Handler\Proxy;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -45,7 +42,9 @@ class HomeController extends Controller
     {
         // $descPrice = $this->productRepository->filterProductByDescPrice();
 
-        $descPrice = Product::orderBy('price', 'desc')->get();
+        $descPrice = Product::orderBy('price', 'desc')
+            ->orderBy('sale_price', 'desc')
+            ->get();
 
         return view('site.pages.descprice', compact('descPrice'));
     }
@@ -54,7 +53,9 @@ class HomeController extends Controller
     {
         // $ascPrice = $this->productRepository->filterProductByAscPrice();
 
-        $ascPrice = Product::orderBy('price', 'asc')->get();
+        $ascPrice = Product::orderBy('price', 'asc')
+            ->orderBy('sale_price', 'asc')
+            ->get();
 
         return view('site.pages.ascprice', compact('ascPrice'));
     }

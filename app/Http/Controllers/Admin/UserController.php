@@ -6,9 +6,8 @@ use App\Contracts\UserContract;
 use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Laravel\Ui\Presets\React;
+use Hash;
 
 class UserController extends BaseController
 {

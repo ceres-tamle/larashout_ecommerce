@@ -129,7 +129,14 @@
                                         <dl class="dlist-align">
                                             <dt>Total cost: </dt>
                                             <dd class="text-right h5 b">
-                                                {{ config('settings.currency_symbol') }}{{ \Cart::getSubTotal() }} </dd>
+                                                @if (Session::get('pay_percent') !== null)
+                                                    {{ Session::get('pay_percent') }} đ
+                                                @elseif (Session::get('pay_value') !== null)
+                                                    {{ Session::get('pay_value') }} đ
+                                                @else
+                                                    {{ Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}
+                                                @endif
+                                            </dd>
                                         </dl>
                                     </article>
                                 </div>

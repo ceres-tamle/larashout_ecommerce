@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Cart;
+use Session;
 
 class OrderRepository extends BaseRepository implements OrderContract
 {
@@ -18,11 +19,23 @@ class OrderRepository extends BaseRepository implements OrderContract
 
     public function storeOrderDetails($params)
     {
+        if (Session::get('pay_percent') !== null) {
+            $grand_total = Session::get('pay_percent');
+            // Session::put('total_pay_percent', $grand_total);
+        } elseif (Session::get('pay_value') !== null) {
+            $grand_total = Session::get('pay_value');
+            // Session::put('total_pay_value', $grand_total);
+        } else {
+            $grand_total = Session::get(Cart::getSubTotal());
+            // Session::put('total_pay', $grand_total);
+        }
+
         $order = Order::create([
             'order_number'      =>  'ORD-' . strtoupper(uniqid()),
             'user_id'           =>  auth()->user()->id,
             'status'            =>  'processing',
-            'grand_total'       =>  Cart::getSubTotal(),
+            // 'grand_total'       =>  Cart::getSubTotal(),
+            'grand_total'       =>  $grand_total,
             'item_count'        =>  Cart::getTotalQuantity(),
             'payment_status'    =>  0,
             'payment_method'    =>  'COD',

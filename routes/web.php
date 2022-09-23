@@ -4,6 +4,7 @@ use App\Http\Controllers\Site\AccountController;
 use App\Http\Controllers\Site\CartController;
 use App\Http\Controllers\Site\CategoryController;
 use App\Http\Controllers\Site\CheckoutController;
+use App\Http\Controllers\Site\CouponController;
 use App\Http\Controllers\Site\HomeController;
 use App\Http\Controllers\Site\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,10 @@ Route::get('/cart/item/{id}/remove', [CartController::class, 'removeItem'])->nam
 Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('checkout.cart.clear');
 
 Route::group(['middleware' => ['auth']], function () {
+
+    // Coupon
+    Route::post('/coupon/check', [CouponController::class, 'checkCoupon'])->name('coupon.check');
+    Route::post('/coupon/cancel', [CouponController::class, 'cancelCoupon'])->name('coupon.cancel');
 
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'getCheckout'])->name('checkout.index');
