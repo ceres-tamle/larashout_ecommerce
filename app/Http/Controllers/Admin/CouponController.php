@@ -26,7 +26,8 @@ class CouponController extends Controller
             'code' => $request->input('code'),
             'time' => $request->input('time'),
             'condition' => $request->input('condition'),
-            'number' => $request->input('number'),
+            'active' => $request->input('active'),
+            'discount' => $request->input('discount'),
         ]);
 
         return redirect('/admin/coupons');

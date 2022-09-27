@@ -95,10 +95,10 @@
                                             @foreach (Session::get('coupon_code') as $key => $coupon)
                                                 {{-- Discount Percent --}}
                                                 @if (isset($coupon['condition']) && $coupon['condition'] == 1)
-                                                    {{ $coupon['number'] }} %
+                                                    {{ $coupon['discount'] }} %
                                                     {{-- Discount Value --}}
                                                 @elseif(isset($coupon['condition']) && $coupon['condition'] == 2)
-                                                    {{ number_format($coupon['number'], 0, ',', '.') }} đ
+                                                    {{ number_format($coupon['discount'], 0, ',', '.') }} đ
                                                 @endif
                                             @endforeach
                                         @endif

@@ -17,7 +17,8 @@
                                 <th class="text-center"> Code </th>
                                 <th class="text-center"> Time </th>
                                 <th class="text-center"> Condition </th>
-                                <th class="text-center"> Number </th>
+                                <th class="text-center"> Active </th>
+                                <th class="text-center"> Discount </th>
                                 <th style="width:100px; min-width:100px;" class="text-center text-danger">
                                     <i class="fa fa-bolt"></i>
                                 </th>
@@ -40,10 +41,19 @@
                                         @endif
                                     </td>
                                     <td>
+                                        @if ((int) $coupon->active === 0)
+                                            Inactive
+                                        @elseif ((int) $coupon->active === 1)
+                                            Active
+                                        @else
+                                            Unknown
+                                        @endif
+                                    </td>
+                                    <td>
                                         @if ((int) $coupon->condition === 1)
-                                            Discount {{ $coupon->number }} %
+                                            Discount {{ $coupon->discount }} %
                                         @elseif ((int) $coupon->condition === 2)
-                                            Discount {{ $coupon->number }} VND
+                                            Discount {{ $coupon->discount }} VND
                                         @else
                                             Unknown
                                         @endif

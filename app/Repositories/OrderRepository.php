@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\OrderContract;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;

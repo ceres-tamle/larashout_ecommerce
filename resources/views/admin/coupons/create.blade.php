@@ -19,10 +19,10 @@
         </div>
         <div class="col-md-9">
             <div class="tab-content">
-                <div class="tab-pane active" id="general">
-                    <div class="tile">
-                        <form action="{{ route('admin.coupons.store') }}" method="POST" role="form">
-                            @csrf
+                <form action="{{ route('admin.coupons.store') }}" method="POST" role="form">
+                    @csrf
+                    <div class="tab-pane active" id="general">
+                        <div class="tile">
                             <h3 class="tile-title">Coupon Information</h3>
                             <hr>
                             <div class="tile-body">
@@ -87,14 +87,31 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    {{-- Number --}}
+                                    {{-- Active --}}
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label">Number</label>
-                                            <input class="form-control @error('number') is-invalid @enderror" type="text"
-                                                name="number" value="{{ old('number') }}" />
+
+                                            <label class="control-label">Active</label>
+                                            <select name="active" class="form-control">
+                                                <option value="0">Inactive</option>
+                                                <option value="1">Active</option>
+                                            </select>
+
                                             <div class="invalid-feedback active">
-                                                <i class="fa fa-exclamation-circle fa-fw"></i> @error('number')
+                                                <i class="fa fa-exclamation-circle fa-fw"></i> @error('active')
+                                                    <span>{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Discount --}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Discount</label>
+                                            <input class="form-control @error('discount') is-invalid @enderror"
+                                                type="text" name="discount" value="{{ old('discount') }}" />
+                                            <div class="invalid-feedback active">
+                                                <i class="fa fa-exclamation-circle fa-fw"></i> @error('discount')
                                                     <span>{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -102,29 +119,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tile-footer">
-                                <div class="row d-print-none mt-2">
-                                    <div class="col-12 text-right">
-                                        <button class="btn btn-success" type="submit"><i
-                                                class="fa fa-fw fa-lg fa-check-circle"></i>Save Coupon</button>
-                                        <a class="btn btn-danger" href="{{ route('admin.coupons.index') }}">
-                                            <i class="fa fa-fw fa-lg fa-arrow-left"></i>Go Back
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                    <div class="tile-footer">
+                        <div class="row d-print-none mt-2">
+                            <div class="col-12 text-right">
+                                <button class="btn btn-success" type="submit"><i
+                                        class="fa fa-fw fa-lg fa-check-circle"></i>Save
+                                    Coupon</button>
+                                <a class="btn btn-danger" href="{{ route('admin.coupons.index') }}">
+                                    <i class="fa fa-fw fa-lg fa-arrow-left"></i>Go Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-@endsection
-@push('scripts')
-    <script type="text/javascript" src="{{ asset('backend/js/plugins/select2.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('#categories').select2();
-        });
-    </script>
-@endpush
+    @endsection
+    @push('scripts')
+        <script type="text/javascript" src="{{ asset('backend/js/plugins/select2.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#categories').select2();
+            });
+        </script>
+    @endpush
