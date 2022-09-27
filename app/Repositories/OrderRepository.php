@@ -27,7 +27,7 @@ class OrderRepository extends BaseRepository implements OrderContract
             $grand_total = Session::get('pay_value');
             // Session::put('total_pay_value', $grand_total);
         } else {
-            $grand_total = Session::get(Cart::getSubTotal());
+            $grand_total = Cart::getSubTotal();
             // Session::put('total_pay', $grand_total);
         }
 

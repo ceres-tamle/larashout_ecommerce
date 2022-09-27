@@ -30,7 +30,15 @@
                                     <td>{{ $coupon->id }}</td>
                                     <td>{{ $coupon->name }}</td>
                                     <td>{{ $coupon->code }}</td>
-                                    <td>{{ $coupon->time }}</td>
+                                    <td>
+                                        @if ((int) $coupon->time === 1)
+                                            one time coupon
+                                        @elseif ((int) $coupon->time > 1)
+                                            {{ $coupon->time }} coupons
+                                        @else
+                                            Unknown
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ((int) $coupon->condition === 1)
                                             Percent

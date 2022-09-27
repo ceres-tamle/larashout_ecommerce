@@ -26,11 +26,11 @@ class CheckoutFormRequest extends FormRequest
         return [
             'first_name'   => 'required|max:8|min:2',
             'last_name'    => 'required|max:8|min:2',
-            'address'      => 'required|max:255',
-            'city'         => 'required|max:55',
-            'country'      => 'required|max:55',
-            'post_code'    => 'required|numeric',
-            'phone_number' => 'required|numeric',
+            'address'      => 'nullable|max:255',
+            'city'         => 'nullable|max:55',
+            'country'      => 'nullable|max:55',
+            'post_code'    => 'nullable|numeric',
+            'phone_number' => 'nullable|numeric',
         ];
     }
 }

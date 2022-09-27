@@ -31,27 +31,23 @@ class CheckoutController extends Controller
         $coupon_code = Session::get('code');
 
         $time_coupon = Coupon::select('time')->where('code', $coupon_code)->first();
-        $time_coupon = Coupon::select('time')->where('code', $coupon_code)->first();
-        Session::put('time_coupon', $time_coupon);
+        Session::put('time_coupon', $time_coupon->time);
         // dd(Session::get('time_coupon'));
 
-        $time_coupon = Session::get('time_coupon');
-        // dd(Session::get('time_coupon'));
+        $time = Session::get('time_coupon');
+        // dd($time);
 
-        if (isset($time_coupon)) {
-            if ((bool)$time_coupon == 1) { // if coupon time = 1
+        if (isset($time_coupon) && $time === 1) { // if coupon time = 1
 
-                $active = Coupon::select('id')->where('code', $coupon_code)->first();
-                // dd($id);
+            $active = Coupon::select('id')->where('code', $coupon_code)->first();
+            // dd($active);
 
-                // $active = Coupon::findOrFail($id);
-                // dd($active);
-                if ($active) {
-                    $active->active = 0;
-                    $active->save();
-                }
-            } else {
-                return 'Session error!';
+            // $active = Coupon::findOrFail($id);
+            // dd($active);
+
+            if ($active) {
+                $active->active = 0;
+                $active->save();
             }
         }
 
