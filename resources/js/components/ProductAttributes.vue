@@ -42,8 +42,9 @@
                     <div class="form-group">
                         <label class="control-label" for="price">Price</label>
                         <input class="form-control" type="text" id="price" v-model="currentPrice" />
-                        <small class="text-danger">This price will be added to the main price of product on
-                            frontend.</small>
+                        <small class="text-danger">
+                            This price will be added to the main price of product on frontend.
+                        </small>
                     </div>
                 </div>
                 <div class="col-md-12">

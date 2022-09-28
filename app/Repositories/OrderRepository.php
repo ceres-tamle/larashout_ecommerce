@@ -6,6 +6,7 @@ use App\Contracts\OrderContract;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\OrderItem;
 use Cart;
 use Session;
@@ -52,18 +53,37 @@ class OrderRepository extends BaseRepository implements OrderContract
 
         if ($order) {
             $items = Cart::getContent();
+
             foreach ($items as $item) {
+                // dd($item);
+                // dd($item->attributes->color);
+
                 // A better way will be to bring the product id with the cart items
                 // you can explore the package documentation to send product id with the cart
                 $product = Product::where('name', $item->name)->first();
 
-                $orderItem = new OrderItem([
-                    'product_id'    =>  $product->id,
-                    'quantity'      =>  $item->quantity,
-                    'price'         =>  $item->getPriceSum()
-                ]);
+                // $orderItem = new OrderItem([
+                //     'product_id'    => $product->id,
+                //     'quantity'      => $item->quantity,
+                //     'price'         => $item->getPriceSum(),
+                //     'capacity'      => $item->$item->attributes->capacity,
+                //     'color'         => $item->$item->attributes->color,
+                //     'materials'     => $item->$item->attributes->materials,
+                //     'size'          => $item->$item->attributes->size,
+                // ]);
+                // $order->items()->save($orderItem);
 
-                $order->items()->save($orderItem);
+                $orderDetails = new OrderDetails([
+                    'product_id'    => $product->id,
+                    'quantity'      => $item->quantity,
+                    'price'         => $item->getPriceSum(),
+                    'capacity'      => $item->attributes->capacity,
+                    'color'         => $item->attributes->color,
+                    'materials'     => $item->attributes->materials,
+                    'size'          => $item->attributes->size,
+                ]);
+                // dd($order->items());
+                $order->items()->save($orderDetails);
             }
         }
         return $order;

@@ -28,7 +28,7 @@
                                     <div class="col form-group">
                                         <label>First name</label>
                                         <input type="text" class="form-control @error('first_name') is-invalid @enderror"
-                                            name="first_name" value="{{ old('first_name') }}">
+                                            name="first_name" value="{{ old('first_name', 'Le') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('first_name')
@@ -39,7 +39,7 @@
                                     <div class="col form-group">
                                         <label>Last name</label>
                                         <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                                            name="last_name" value="{{ old('last_name') }}">
+                                            name="last_name" value="{{ old('last_name', 'Tam') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('last_name')
@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <label>Address</label>
                                     <input type="text" class="form-control @error('address') is-invalid @enderror"
-                                        name="address" value="{{ old('address') }}">
+                                        name="address" value="{{ old('address', 'Long Binh Tan') }}">
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('address')
                                             <span>{{ $message }}</span>
@@ -61,7 +61,7 @@
                                     <div class="form-group col-md-6">
                                         <label>City</label>
                                         <input type="text" class="form-control @error('city') is-invalid @enderror"
-                                            name="city" value="{{ old('city') }}">
+                                            name="city" value="{{ old('city', 'Bien Hoa') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('city')
@@ -72,7 +72,7 @@
                                     <div class="form-group col-md-6">
                                         <label>Country</label>
                                         <input type="text" class="form-control @error('country') is-invalid @enderror"
-                                            name="country" value="{{ old('country') }}">
+                                            name="country" value="{{ old('country', 'Vietnam') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('country')
@@ -84,7 +84,7 @@
                                     <div class="form-group  col-md-6">
                                         <label>Post Code</label>
                                         <input type="text" class="form-control @error('post_code') is-invalid @enderror"
-                                            name="post_code" value="{{ old('post_code') }}">
+                                            name="post_code" value="{{ old('post_code', '76000') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('post_code')
@@ -96,7 +96,7 @@
                                         <label>Phone Number</label>
                                         <input type="text"
                                             class="form-control @error('phone_number') is-invalid @enderror"
-                                            name="phone_number" value="{{ old('phone_number') }}">
+                                            name="phone_number" value="{{ old('phone_number', '+84944027740') }}">
                                     </div>
                                     <div class="invalid-feedback active">
                                         <i class="fa fa-exclamation-circle fa-fw"></i> @error('phone_number')

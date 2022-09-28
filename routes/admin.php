@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\AttributeValueController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponController;
@@ -43,9 +44,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [AttributeController::class, 'index'])->name('admin.attributes.index');
             Route::get('/create', [AttributeController::class, 'create'])->name('admin.attributes.create');
             Route::post('/store', [AttributeController::class, 'store'])->name('admin.attributes.store');
-            Route::get('/{id}/edit', [AttributeController::class, 'edit'])->name('admin.attributes.edit');
+            Route::get('/edit/{id}', [AttributeController::class, 'edit'])->name('admin.attributes.edit');
             Route::post('/update', [AttributeController::class, 'update'])->name('admin.attributes.update');
-            Route::get('/{id}/delete', [AttributeController::class, 'delete'])->name('admin.attributes.delete');
+            Route::get('/delete/{id}', [AttributeController::class, 'delete'])->name('admin.attributes.delete');
 
             Route::post('/get-values', [AttributeValueController::class, 'getValues']);
             Route::post('/add-values', [AttributeValueController::class, 'addValues']);

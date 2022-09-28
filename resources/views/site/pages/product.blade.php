@@ -77,24 +77,31 @@
                                                     @foreach ($attributes as $attribute)
                                                         @php $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray()) @endphp
                                                         @if ($attributeCheck)
-                                                            <dt>{{ $attribute->name }}: </dt>
-                                                            <dd>
-                                                                <select class="form-control form-control-sm option"
-                                                                    style="width:180px;"
-                                                                    name="{{ strtolower($attribute->name) }}">
-                                                                    <option data-price="0" value="0"> Select a
-                                                                        {{ $attribute->name }}</option>
-                                                                    @foreach ($product->attributes as $attributeValue)
-                                                                        @if ($attributeValue->attribute_id == $attribute->id)
-                                                                            <option
-                                                                                data-price="{{ $attributeValue->price }}"
-                                                                                value="{{ $attributeValue->value }}">
-                                                                                {{ ucwords($attributeValue->value . ' +' . $attributeValue->price) }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            </dd>
+                                                            <div class="py-2">
+                                                                <dt>{{ $attribute->name }}: </dt>
+                                                                <dd>
+                                                                    <select class="form-control form-control-sm option"
+                                                                        style="width:180px;"
+                                                                        name="{{ strtolower($attribute->name) }}">
+                                                                        <option data-price="0" value="0">
+                                                                            Select {{ $attribute->name }}
+                                                                        </option>
+                                                                        @foreach ($product->attributes as $attributeValue)
+                                                                            @if ($attributeValue->attribute_id == $attribute->id)
+                                                                                <option
+                                                                                    data-price="{{ $attributeValue->price }}"
+                                                                                    value="{{ $attributeValue->value }}">
+                                                                                    {{-- {{ ucwords($attributeValue->value . ' +' . $attributeValue->price) }} --}}
+                                                                                    {{ ucwords($attributeValue->value) }}
+                                                                                    @if ($attributeValue->price > 0)
+                                                                                        {{ $attributeValue->price }}
+                                                                                    @endif
+                                                                                </option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
+                                                                </dd>
+                                                            </div>
                                                         @endif
                                                     @endforeach
                                                 </dl>
