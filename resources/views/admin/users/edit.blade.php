@@ -41,7 +41,8 @@
                                     <div class="col-md-6">
                                         <label class="control-label">Id</label>
                                         <div class="form-group">
-                                            <input class="form-control" type="text" name="id" value="{{ old('id', $user->id) }}" readonly/>
+                                            <input class="form-control" type="text" name="id"
+                                                value="{{ old('id', $user->id) }}" readonly />
                                         </div>
                                     </div>
                                 </div>

@@ -33,6 +33,26 @@ class CouponController extends Controller
         return redirect('/admin/coupons');
     }
 
+    public function edit($id)
+    {
+        $coupon = Coupon::find($id);
+        return view('admin.coupons.edit', ['coupon' => $coupon]);
+    }
+
+    public function update(Request $request)
+    {
+        $coupon = Coupon::where('id', $request->input('id'))->first();
+        $coupon->name = $request->input('name');
+        $coupon->code = $request->input('code');
+        $coupon->time =  $request->input('time');
+        $coupon->condition = $request->input('condition');
+        $coupon->active = $request->input('active');
+        $coupon->discount = $request->input('discount');
+        $coupon->save();
+
+        return redirect('/admin/coupons');
+    }
+
     public function delete($id)
     {
         $coupon = Coupon::find($id);
