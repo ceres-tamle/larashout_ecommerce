@@ -35,6 +35,7 @@ Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('categ
 // Product
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
 Route::post('/product/add/cart', [ProductController::class, 'addToCart'])->name('product.add.cart');
+Route::post('/product/variant/price', [ProductController::class, 'variantPrice'])->name('product.variant.price');
 
 // Cart
 Route::get('/cart', [CartController::class, 'getCart'])->name('checkout.cart');
@@ -50,8 +51,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'getCheckout'])->name('checkout.index');
     Route::post('/checkout/order', [CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
-    Route::get('checkout/payment/complete', [CheckoutController::class, 'complete'])->name('checkout.payment.complete');
+    Route::get('/checkout/payment/complete', [CheckoutController::class, 'complete'])->name('checkout.payment.complete');
 
     // Account
-    Route::get('account/orders', [AccountController::class, 'getOrders'])->name('account.orders');
+    Route::get('/account/orders', [AccountController::class, 'getOrders'])->name('account.orders');
 });

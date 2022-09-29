@@ -35,4 +35,15 @@ class ProductController extends Controller
 
         return redirect()->back()->with('message', 'Item added to cart successfully.');
     }
+
+    public function variantPrice(Request $request)
+    {
+        $capacity_value = $request->input('capacity');
+        $materials_value = $request->input('materials');
+        $color_value = $request->input('color');
+        $size_value = $request->input('size');
+
+        return $request->all();
+        // return [];
+    }
 }
