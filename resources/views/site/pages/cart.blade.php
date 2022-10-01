@@ -57,8 +57,10 @@
                                             </td>
                                             <td>
                                                 <div class="price-wrap">
-                                                    <var
-                                                        class="price">{{ config('settings.currency_symbol') . $item->price }}</var>
+                                                    <var class="price">
+                                                        {{  $item->price . config('settings.currency_symbol') }}
+                                                        {{-- FIX PRODUCT PRICE HERE --}}
+                                                    </var>
                                                     <small class="text-muted">each</small>
                                                 </div>
                                             </td>
@@ -82,7 +84,10 @@
                         <dl class="dlist-align h4">
                             <dt>Total:</dt>
                             <dd class="text-right">
-                                <strong>{{ \Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}</strong>
+                                <strong>
+                                    {{ \Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}
+                                    {{-- FIX TOTAL PRICE HERE --}}
+                                </strong>
                             </dd>
                         </dl>
 

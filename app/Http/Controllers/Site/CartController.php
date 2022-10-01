@@ -13,6 +13,16 @@ class CartController extends Controller
         return view('site.pages.cart');
     }
 
+    // SUM product price with quantity, variant
+    public function getProductPrice()
+    {
+    }
+
+    // SUM total product price in cart
+    public function getProductTotal()
+    {
+    }
+
     // Removing Item from Shopping Cart
     public function removeItem($id)
     {
@@ -35,6 +45,7 @@ class CartController extends Controller
         $request->session()->forget('discount_value');
         $request->session()->forget('pay_percent');
         $request->session()->forget('pay_value');
+        $request->session()->forget('total_price');
 
         return redirect('/');
     }

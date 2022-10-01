@@ -59,6 +59,7 @@ class CheckoutController extends Controller
         $request->session()->forget('discount_value');
         $request->session()->forget('pay_percent');
         $request->session()->forget('pay_value');
+        $request->session()->forget('total_price');
 
         return redirect('/');
     }

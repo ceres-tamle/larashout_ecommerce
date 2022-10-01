@@ -3,11 +3,9 @@
 namespace App\Repositories;
 
 use App\Contracts\OrderContract;
-use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetails;
-use App\Models\OrderItem;
 use Cart;
 use Session;
 
@@ -66,10 +64,6 @@ class OrderRepository extends BaseRepository implements OrderContract
                 //     'product_id'    => $product->id,
                 //     'quantity'      => $item->quantity,
                 //     'price'         => $item->getPriceSum(),
-                //     'capacity'      => $item->$item->attributes->capacity,
-                //     'color'         => $item->$item->attributes->color,
-                //     'materials'     => $item->$item->attributes->materials,
-                //     'size'          => $item->$item->attributes->size,
                 // ]);
                 // $order->items()->save($orderItem);
 

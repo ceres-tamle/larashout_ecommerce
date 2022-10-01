@@ -55,15 +55,24 @@
                                     <div class="mb-3">
                                         @if ($product->sale_price > 0)
                                             <var class="price h3 text-danger">
-                                                <span class="currency">{{ config('settings.currency_symbol') }}</span><span
-                                                    class="num" id="productPrice">{{ $product->sale_price }}</span>
+                                                <span class="currency">
+                                                    {{ config('settings.currency_symbol') }}
+                                                </span>
+                                                <span class="num" id="productPrice">
+                                                    {{ $product->sale_price }}
+                                                </span>
                                                 <del class="price-old">
-                                                    {{ config('settings.currency_symbol') }}{{ $product->price }}</del>
+                                                    {{ config('settings.currency_symbol') }}{{ $product->price }}
+                                                </del>
                                             </var>
                                         @else
                                             <var class="price h3 text-success">
-                                                <span class="currency">{{ config('settings.currency_symbol') }}</span><span
-                                                    class="num" id="productPrice">{{ $product->price }}</span>
+                                                <span class="currency">
+                                                    {{ config('settings.currency_symbol') }}
+                                                </span>
+                                                <span class="num" id="productPrice">
+                                                    {{ $product->price }}
+                                                </span>
                                             </var>
                                         @endif
                                     </div>
@@ -73,7 +82,7 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                {{-- <dl class="dlist-inline">
+                                                <dl class="dlist-inline">
                                                     @foreach ($attributes as $attribute)
                                                         @php $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray()) @endphp
                                                         @if ($attributeCheck)
@@ -101,187 +110,6 @@
                                                                     </select>
                                                                 </dd>
                                                             </div>
-                                                        @endif
-                                                    @endforeach
-                                                </dl> --}}
-                                                <dl class="dlist-inline">
-                                                    {{-- capacity --}}
-                                                    @foreach ($attributes as $attribute)
-                                                        @php
-                                                            $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray());
-                                                        @endphp
-
-                                                        @if ($attributeCheck)
-                                                            @if ($attribute->name === 'Capacity')
-                                                                <div class="py-2">
-                                                                    <dt>
-                                                                        {{ $attribute->name }}:
-                                                                    </dt>
-                                                                    <dd>
-                                                                        <select class="form-control form-control-sm option"
-                                                                            style="width:180px;"
-                                                                            name="{{ strtolower($attribute->name) }}">
-                                                                            <option data-capacityprice="0" value="0">
-                                                                                Select {{ $attribute->name }}
-                                                                            </option>
-
-                                                                            @foreach ($product->attributes as $attributeValue)
-                                                                                {{-- compare attribute_id in products table with id in attributes table --}}
-                                                                                @if ($attributeValue->attribute_id == $attribute->id)
-                                                                                    <option
-                                                                                        data-capacityprice="{{ $attributeValue->price }}"
-                                                                                        value="{{ $attributeValue->value }}">
-                                                                                        {{ ucwords($attributeValue->value) }}
-
-                                                                                        @if ($attributeValue->price > 0)
-                                                                                            {{ $attributeValue->price }}
-                                                                                            @php
-                                                                                                $capacity_price = $attributeValue->price;
-                                                                                                // echo $capacity_price;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    </option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </dd>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-
-                                                    {{-- color --}}
-                                                    @foreach ($attributes as $attribute)
-                                                        @php
-                                                            $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray());
-                                                        @endphp
-
-                                                        @if ($attributeCheck)
-                                                            @if ($attribute->name === 'Color')
-                                                                <div class="py-2">
-                                                                    <dt>
-                                                                        {{ $attribute->name }}:
-                                                                    </dt>
-                                                                    <dd>
-                                                                        <select class="form-control form-control-sm option"
-                                                                            style="width:180px;"
-                                                                            name="{{ strtolower($attribute->name) }}">
-                                                                            <option data-colorprice="0" value="0">
-                                                                                Select {{ $attribute->name }}
-                                                                            </option>
-
-                                                                            @foreach ($product->attributes as $attributeValue)
-                                                                                {{-- compare attribute_id in products table with id in attributes table --}}
-                                                                                @if ($attributeValue->attribute_id == $attribute->id)
-                                                                                    <option
-                                                                                        data-colorprice="{{ $attributeValue->price }}"
-                                                                                        value="{{ $attributeValue->value }}">
-                                                                                        {{ ucwords($attributeValue->value) }}
-
-                                                                                        @if ($attributeValue->price > 0)
-                                                                                            {{ $attributeValue->price }}
-                                                                                            @php
-                                                                                                $color_price = $attributeValue->price;
-                                                                                                // echo $color_price;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    </option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </dd>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-
-                                                    {{-- materials --}}
-                                                    @foreach ($attributes as $attribute)
-                                                        @php
-                                                            $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray());
-                                                        @endphp
-
-                                                        @if ($attributeCheck)
-                                                            @if ($attribute->name === 'Materials')
-                                                                <div class="py-2">
-                                                                    <dt>
-                                                                        {{ $attribute->name }}:
-                                                                    </dt>
-                                                                    <dd>
-                                                                        <select class="form-control form-control-sm option"
-                                                                            style="width:180px;"
-                                                                            name="{{ strtolower($attribute->name) }}">
-                                                                            <option data-materialsprice="0" value="0">
-                                                                                Select {{ $attribute->name }}
-                                                                            </option>
-
-                                                                            @foreach ($product->attributes as $attributeValue)
-                                                                                {{-- compare attribute_id in products table with id in attributes table --}}
-                                                                                @if ($attributeValue->attribute_id == $attribute->id)
-                                                                                    <option
-                                                                                        data-materialsprice="{{ $attributeValue->price }}"
-                                                                                        value="{{ $attributeValue->value }}">
-                                                                                        {{ ucwords($attributeValue->value) }}
-
-                                                                                        @if ($attributeValue->price > 0)
-                                                                                            {{ $attributeValue->price }}
-                                                                                            @php
-                                                                                                $materials_price = $attributeValue->price;
-                                                                                                // echo $materials_price;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    </option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </dd>
-                                                                </div>
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-
-                                                    {{-- size --}}
-                                                    @foreach ($attributes as $attribute)
-                                                        @php
-                                                            $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray());
-                                                        @endphp
-
-                                                        @if ($attributeCheck)
-                                                            @if ($attribute->name === 'Size')
-                                                                <div class="py-2">
-                                                                    <dt>
-                                                                        {{ $attribute->name }}:
-                                                                    </dt>
-                                                                    <dd>
-                                                                        <select class="form-control form-control-sm option"
-                                                                            style="width:180px;"
-                                                                            name="{{ strtolower($attribute->name) }}">
-                                                                            <option data-sizeprice="0" value="0">
-                                                                                Select {{ $attribute->name }}
-                                                                            </option>
-
-                                                                            @foreach ($product->attributes as $attributeValue)
-                                                                                {{-- compare attribute_id in products table with id in attributes table --}}
-                                                                                @if ($attributeValue->attribute_id == $attribute->id)
-                                                                                    <option
-                                                                                        data-sizeprice="{{ $attributeValue->price }}"
-                                                                                        value="{{ $attributeValue->value }}">
-                                                                                        {{ ucwords($attributeValue->value) }}
-
-                                                                                        @if ($attributeValue->price > 0)
-                                                                                            {{ $attributeValue->price }}
-                                                                                            @php
-                                                                                                $size_price = $attributeValue->price;
-                                                                                                // echo $size_price;
-                                                                                            @endphp
-                                                                                        @endif
-                                                                                    </option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </dd>
-                                                                </div>
-                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 </dl>
@@ -410,6 +238,7 @@
                     data: form_data,
                     success: function(data) {
                         console.log(data);
+                        $('#productPrice').html(data);
                     }
                 });
             });
