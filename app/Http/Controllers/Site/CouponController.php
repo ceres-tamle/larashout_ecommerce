@@ -13,19 +13,7 @@ class CouponController extends Controller
     public function checkCoupon(Request $request)
     {
         $coupon_code = $request->input('coupon_code');
-        Session::put('code', $coupon_code);
-
-        // $onetime_coupon = Coupon::select('time')->where('code', $coupon_code)
-        //     ->where('time', '=', 1)
-        //     ->first();
-        // Session::put('time_coupon', $onetime_coupon);
-        // dd(Session::get('time_coupon'));
-
-        // $manytimes_coupon = Coupon::select('time')->where('code', $coupon_code)
-        //     ->where('time', '>', 1)
-        //     ->first();
-        // Session::put('time_coupon', $manytimes_coupon);
-        // dd(Session::get('time_coupon'));
+        Session::put('code', $coupon_code); // use this session in blade
 
         $coupon = Coupon::where('code', $coupon_code)
             ->where('active', 1)

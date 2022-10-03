@@ -21,20 +21,18 @@ class OrderRepository extends BaseRepository implements OrderContract
     {
         if (Session::get('pay_percent') !== null) {
             $grand_total = Session::get('pay_percent');
-            // Session::put('total_pay_percent', $grand_total);
         } elseif (Session::get('pay_value') !== null) {
             $grand_total = Session::get('pay_value');
-            // Session::put('total_pay_value', $grand_total);
         } else {
             $grand_total = Cart::getSubTotal();
-            // Session::put('total_pay', $grand_total);
         }
 
         $order = Order::create([
             'order_number'      =>  'ORD-' . strtoupper(uniqid()),
             'user_id'           =>  auth()->user()->id,
             'status'            =>  'processing',
-            // 'grand_total'       =>  Cart::getSubTotal(),
+            'total'             =>  Cart::getSubTotal(),
+            'discount'          =>  Cart::getSubTotal() - $grand_total,
             'grand_total'       =>  $grand_total,
             'item_count'        =>  Cart::getTotalQuantity(),
             'payment_status'    =>  0,
@@ -53,9 +51,6 @@ class OrderRepository extends BaseRepository implements OrderContract
             $items = Cart::getContent();
 
             foreach ($items as $item) {
-                // dd($item);
-                // dd($item->attributes->color);
-
                 // A better way will be to bring the product id with the cart items
                 // you can explore the package documentation to send product id with the cart
                 $product = Product::where('name', $item->name)->first();
