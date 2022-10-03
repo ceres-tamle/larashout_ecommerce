@@ -9,6 +9,18 @@
     <section class="section-content bg padding-y border-top" id="site">
         <div class="container">
             <div class="row">
+                <div class="col-sm-12">
+                    @if (Session::has('message'))
+                        <p class="alert alert-success">{{ Session::get('message') }}</p>
+                    @elseif (Session::has('error'))
+                        <p class="alert alert-danger">{{ Session::get('error') }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="row no-gutters">
@@ -27,8 +39,9 @@
                                     @else
                                         <div class="img-big-wrap">
                                             <div>
-                                                <a href="https://via.placeholder.com/176" data-fancybox=""><img
-                                                        src="https://via.placeholder.com/176"></a>
+                                                <a href="https://via.placeholder.com/176" data-fancybox="">
+                                                    <img src="https://via.placeholder.com/176">
+                                                </a>
                                             </div>
                                         </div>
                                     @endif
@@ -125,8 +138,6 @@
                                                             value="1" max="{{ $product->quantity }}" name="qty"
                                                             style="width:70px;">
                                                         <input type="hidden" name="productId" value="{{ $product->id }}">
-                                                        <input type="hidden" name="price" id="finalPrice"
-                                                            value="{{ $product->sale_price != '' ? $product->sale_price : $product->price }}">
                                                     </dd>
                                                 </dl>
                                             </div>
@@ -162,52 +173,6 @@
                     alert('Please select an option');
                 }
             });
-
-            // $('.option').change(function() {
-            //     $('#productPrice').html(
-            //         "{{ $product->sale_price != '' ? $product->sale_price : $product->price }}");
-            //     let extraPrice = $(this).find(':selected').data('price');
-            //     let price = parseFloat($('#productPrice').html());
-            //     let finalPrice = (Number(extraPrice) + price).toFixed(2);
-            //     $('#finalPrice').val(finalPrice);
-            //     $('#productPrice').html(finalPrice);
-            // });
-
-            // $('.option').change(function() {
-            //     $('#productPrice').html(
-            //         "{{ $product->sale_price != '' ? $product->sale_price : $product->price }}"
-            //     );
-
-            //     // original price
-            //     let price = parseFloat($('#productPrice').html());
-
-            //     // attributes price
-            //     let extraCapacityPrice = $(this).find(':selected').data('capacityprice');
-            //     // let extraColorPrice = $(this).find(':selected').data('colorprice');
-            //     // let extraMaterialsPrice = $(this).find(':selected').data('materialsprice');
-            //     // let extraSizePrice = $(this).find(':selected').data('sizeprice');
-
-            //     // let finalPrice = (price + Number(extraSizePrice)).toFixed(2);
-
-            //     let finalCapacityPrice = (price + Number(extraCapacityPrice)).toFixed(2);
-            //     // let finalColorPrice = (price + Number(extraColorPrice)).toFixed(2);
-            //     // let finalMaterialsPrice = (price + Number(extraMaterialsPrice)).toFixed(2);
-            //     // let finalSizePrice = (price + Number(extraSizePrice)).toFixed(2);
-            //     // let finalPrice = (finalCapacityPrice + finalColorPrice + finalMaterialsPrice +
-            //     //     finalSizePrice).toFixed(2);
-
-            //     // let finalPrice = (price +
-            //     //     Number(extraCapacityPrice) +
-            //     //     Number(extraColorPrice) +
-            //     //     Number(extraMaterialsPrice) +
-            //     //     Number(extraSizePrice)).toFixed(2);
-
-            //     // $('#finalPrice').val(finalPrice);
-            //     // $('#productPrice').html(finalPrice);
-
-            //     $('#finalPrice').val(finalCapacityPrice);
-            //     $('#productPrice').html(finalCapacityPrice);
-            // });
 
             $('.option').change(function() {
                 var capacity = $('select[name="capacity"]').val();

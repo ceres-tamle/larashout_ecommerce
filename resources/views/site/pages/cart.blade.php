@@ -41,7 +41,8 @@
                                             <td>
                                                 <figure class="media">
                                                     <figcaption class="media-body">
-                                                        <h6 class="title text-truncate">{{ Str::words($item->name, 20) }}
+                                                        <h6 class="title text-truncate">
+                                                            {{ Str::words($item->name, 20) }}
                                                         </h6>
                                                         @foreach ($item->attributes as $key => $value)
                                                             <dl class="dlist-inline small">
@@ -58,7 +59,7 @@
                                             <td>
                                                 <div class="price-wrap">
                                                     <var class="price">
-                                                        {{  $item->price . config('settings.currency_symbol') }}
+                                                        {{ number_format($item->price, 2) . config('settings.currency_symbol') }}
                                                         {{-- FIX PRODUCT PRICE HERE --}}
                                                     </var>
                                                     <small class="text-muted">each</small>
@@ -85,7 +86,7 @@
                             <dt>Total:</dt>
                             <dd class="text-right">
                                 <strong>
-                                    {{ \Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}
+                                    {{ number_format(\Cart::getSubTotal(), 2) }} {{ config('settings.currency_symbol') }}
                                     {{-- FIX TOTAL PRICE HERE --}}
                                 </strong>
                             </dd>
@@ -100,10 +101,10 @@
                                             @foreach (Session::get('coupon_code') as $key => $coupon)
                                                 {{-- Discount Percent --}}
                                                 @if (isset($coupon['condition']) && $coupon['condition'] == 1)
-                                                    {{ $coupon['discount'] }} %
+                                                    {{ number_format($coupon['discount'], 2) }} %
                                                     {{-- Discount Value --}}
                                                 @elseif(isset($coupon['condition']) && $coupon['condition'] == 2)
-                                                    {{ number_format($coupon['discount'], 0, ',', '.') }} đ
+                                                    {{ number_format($coupon['discount'], 2) . config('settings.currency_symbol') }}
                                                 @endif
                                             @endforeach
                                         @endif
@@ -116,9 +117,9 @@
                                 <dd class="text-right">
                                     <strong>
                                         @if (Session::get('discount_percent') !== null)
-                                            {{ Session::get('discount_percent') }} đ
+                                            {{ number_format(Session::get('discount_percent'), 2) . config('settings.currency_symbol') }}
                                         @elseif (Session::get('discount_value') !== null)
-                                            {{ Session::get('discount_value') }} đ
+                                            {{ number_format(Session::get('discount_value'), 2) . config('settings.currency_symbol') }}
                                         @endif
                                     </strong>
                                 </dd>
@@ -129,9 +130,9 @@
                                 <dd class="text-right">
                                     <strong>
                                         @if (Session::get('pay_percent') !== null)
-                                            {{ Session::get('pay_percent') }} đ
+                                            {{ number_format(Session::get('pay_percent'), 2) . config('settings.currency_symbol') }}
                                         @elseif (Session::get('pay_value') !== null)
-                                            {{ Session::get('pay_value') }} đ
+                                            {{ number_format(Session::get('pay_value'), 2) . config('settings.currency_symbol') }}
                                         @endif
                                     </strong>
                                 </dd>
