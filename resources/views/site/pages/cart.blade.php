@@ -86,7 +86,7 @@
                             <dt>Total:</dt>
                             <dd class="text-right">
                                 <strong>
-                                    {{ number_format(\Cart::getSubTotal(), 2) }} {{ config('settings.currency_symbol') }}
+                                    {{ number_format(\Cart::getSubTotal(), 2) . config('settings.currency_symbol') }}
                                     {{-- FIX TOTAL PRICE HERE --}}
                                 </strong>
                             </dd>
