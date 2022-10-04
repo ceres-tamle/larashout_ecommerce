@@ -80,7 +80,67 @@ class ProductController extends Controller
             $total_unit_price = $product->sale_price != '' ? $product->sale_price : $product->price;
         }
 
-        Cart::add(uniqid(), $product->name, $total_unit_price, $request->input('qty'), $options);
+        // product attributes id
+        $capacity_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $capacity_value)->first();
+
+        $materials_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $materials_value)->first();
+
+        $color_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $color_value)->first();
+
+        $size_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $size_value)->first();
+
+        // set product id in cart
+        if (isset($capacity_id->id)) {
+            $capacity_idd = $capacity_id->id;
+        } else {
+            $capacity_idd = '00';
+        }
+
+        if (isset($materials_id->id)) {
+            $materials_idd = $materials_id->id;
+        } else {
+            $materials_idd = '00';
+        }
+
+        if (isset($color_id->id)) {
+            $color_idd = $color_id->id;
+        } else {
+            $color_idd = '00';
+        }
+
+        if (isset($size_id->id)) {
+            $size_idd = $size_id->id;
+        } else {
+            $size_idd = '00';
+        }
+
+        if (isset($capacity_idd) || isset($materials_idd) || isset($color_idd) || isset($size_idd)) {
+            $product_id = $product->id
+                . ('-ca' . $capacity_idd)
+                . ('-ma' . $materials_idd)
+                . ('-co' . $color_idd)
+                . ('-si' . $size_idd);
+        } else {
+            $product_id = $product->id . '-no';
+        }
+
+        // add product to cart
+        // Cart::add(uniqid(), $product->name, $total_unit_price, $request->input('qty'), $options);
+        Cart::add(
+            $product_id,
+            $product->name,
+            $total_unit_price,
+            $request->input('qty'),
+            $options
+        );
 
         return redirect()->back()->with('message', 'Item added to cart successfully.');
     }

@@ -1,7 +1,26 @@
 - Check error: View -> Route -> Controller -> Function -> Service
 
--
 1. Set up Route
 2. Set up View
 3. Handle Controller
 4. Tranfer data to View
+
+Report August
+
+Report September
+
+Report October
+    Monday, 4th October, 2022
+        0.5h - Meeting daily
+        1.5h - Fix product variant price (continue).
+        1.5h - Fix product variant price (continue).
+        2h - Tomia guide.
+        2h - Support company.
+
+    Tuesday, 5th October, 2022
+        2h - Update quantity if product existed.
+        1.5h - Update quantity if product existed.
+        2h - Waiting task.
+        2h - Support company.
+
+    Wednesday, 6th October, 2022
