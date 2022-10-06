@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\CartItems;
 use App\Models\Category;
+use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Cart;
@@ -30,8 +32,12 @@ class ViewComposerServiceProvider extends ServiceProvider
             $view->with('categories', Category::orderByRaw('-name ASC')->get()->nest());
         });
 
+        // View::composer('site.partials.header', function ($view) {
+        //     $view->with('cartCount', Cart::getContent()->count());
+        // });
+
         View::composer('site.partials.header', function ($view) {
-            $view->with('cartCount', Cart::getContent()->count());
+            $view->with('cartCount', CartItems::all()->where('user_id', Auth::id())->count());
         });
     }
 }

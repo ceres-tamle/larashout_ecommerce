@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Site;
 use App\Contracts\ProductContract;
 use App\Contracts\AttributeContract;
 use App\Http\Controllers\Controller;
+use App\Models\CartItems;
 use App\Models\ProductAttribute;
+use Auth;
 use Illuminate\Http\Request;
 use Cart;
 use Session;
@@ -32,9 +34,11 @@ class ProductController extends Controller
         return view('site.pages.product', compact('product', 'attributes'));
     }
 
+    // SESSION
     // handle price, quantity to display in cart
-    public function addToCart(Request $request)
+    public function addToCartBySession(Request $request)
     {
+        $user_id = Auth::id();
         $product = $this->productRepository->findProductById($request->input('productId'));
         $options = $request->except('_token', 'productId', 'price', 'qty');
 
@@ -142,6 +146,8 @@ class ProductController extends Controller
             $options
         );
 
+        // dd(Cart::getContent());
+
         return redirect()->back()->with('message', 'Item added to cart successfully.');
     }
 
@@ -202,5 +208,98 @@ class ProductController extends Controller
         return number_format($total_unit_price, 2);
         // return $request->all();
         // return [];
+    }
+
+    // DATABASE
+    // handle price, quantity to display in cart
+    public function addToCartByDB(Request $request)
+    {
+        $product = $this->productRepository->findProductById($request->input('productId'));
+
+        // take value when user select option
+        $capacity_value = $request->input('capacity');
+        $materials_value = $request->input('materials');
+        $color_value = $request->input('color');
+        $size_value = $request->input('size');
+        $quantity_value = $request->input('qty');
+
+        // CAPACITY // product attributes id
+        $capacity_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $capacity_value)->first();
+
+        // set product id in cart
+        if (isset($capacity_id->id)) {
+            $capacity_idd = $capacity_id->id;
+        } else {
+            $capacity_idd = '00';
+        }
+
+        //MATERIALS
+        $materials_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $materials_value)->first();
+
+        if (isset($materials_id->id)) {
+            $materials_idd = $materials_id->id;
+        } else {
+            $materials_idd = '00';
+        }
+
+        // COLOR
+        $color_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $color_value)->first();
+
+        if (isset($color_id->id)) {
+            $color_idd = $color_id->id;
+        } else {
+            $color_idd = '00';
+        }
+
+        // SIZE
+        $size_id = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $size_value)->first();
+
+        if (isset($size_id->id)) {
+            $size_idd = $size_id->id;
+        } else {
+            $size_idd = '00';
+        }
+
+        // product id concatenation
+        if (isset($capacity_idd) || isset($materials_idd) || isset($color_idd) || isset($size_idd)) {
+            $product_id = $product->id
+                . ('-ca' . $capacity_idd)
+                . ('-ma' . $materials_idd)
+                . ('-co' . $color_idd)
+                . ('-si' . $size_idd);
+        } else {
+            $product_id = $product->id . '-no';
+        }
+
+        $cart_item = CartItems::where('product_id', $product_id)->count();
+        if ($cart_item > 0) { // update product quantity in cart
+            $item = CartItems::where('product_id', $product_id)->first();
+            $item->quantity = $item->quantity + 1;
+            $item->save();
+        } elseif ($cart_item === 0) { // add new product to cart
+            CartItems::create([
+                'product_id' => $product_id,
+                'name' => $product->name,
+                'capacity' => $capacity_value,
+                'color' => $color_value,
+                'materials' => $materials_value,
+                'size' => $size_value,
+                'quantity' => $quantity_value,
+                'price' => $product->price,
+                'discount' => 0,
+                'grand_total' => $product->price * $quantity_value,
+                'user_id' => Auth::id(),
+            ]);
+        }
+
+        return redirect()->back()->with('message', 'Item added to cart successfully.');
     }
 }

@@ -22,7 +22,8 @@
         <div class="container">
             <div class="row">
                 <main class="col-sm-9">
-                    @if (\Cart::isEmpty())
+                    {{-- @if (\Cart::isEmpty()) --}}
+                    @if ($sum_cart === 0)
                         <p class="alert alert-warning">Your shopping cart is empty.</p>
                     @else
                         <div class="card">
@@ -36,7 +37,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (\Cart::getContent() as $item)
+                                    {{-- SESSION --}}
+                                    {{-- @foreach (\Cart::getContent() as $item)
                                         <tr>
                                             <td>
                                                 <figure class="media">
@@ -60,13 +62,74 @@
                                                 <div class="price-wrap">
                                                     <var class="price">
                                                         {{ number_format($item->price, 2) . config('settings.currency_symbol') }}
-                                                        {{-- FIX PRODUCT PRICE HERE --}}
                                                     </var>
                                                     <small class="text-muted">each</small>
                                                 </div>
                                             </td>
                                             <td class="text-right">
-                                                <a href="{{ route('checkout.cart.remove', $item->id) }}"
+                                                <a href="{{ route('cart.remove.session', $item->id) }}"
+                                                    class="btn btn-outline-danger">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach --}}
+
+                                    {{-- DATABASE --}}
+                                    @foreach ($cart_items as $key => $item)
+                                        <tr>
+                                            <td>
+                                                <figure class="media">
+                                                    <figcaption class="media-body">
+                                                        <h6 class="title text-truncate">
+                                                            {{ Str::words($item->name, 20) }}
+                                                        </h6>
+                                                        {{-- @foreach ($item->attributes as $key => $value)
+                                                            <dl class="dlist-inline small">
+                                                                <dt>{{ ucwords($key) }}: </dt>
+                                                                <dd>{{ ucwords($value) }}</dd>
+                                                            </dl>
+                                                        @endforeach --}}
+                                                        @if ($item->capacity !== null)
+                                                            <dl class="dlist-inline small">
+                                                                <dt>{{ ucwords($item->$key) }}</dt>
+                                                                <dd>{{ ucwords($item->capacity) }}</dd>
+                                                            </dl>
+                                                        @endif
+                                                        @if ($item->color !== null)
+                                                            <dl class="dlist-inline small">
+                                                                <dt>{{ ucwords($item->$key) }}</dt>
+                                                                <dd>{{ ucwords($item->color) }}</dd>
+                                                            </dl>
+                                                        @endif
+                                                        @if ($item->materials !== null)
+                                                            <dl class="dlist-inline small">
+                                                                <dt>{{ ucwords($item->$key) }}</dt>
+                                                                <dd>{{ ucwords($item->materials) }}</dd>
+                                                            </dl>
+                                                        @endif
+                                                        @if ($item->size !== null)
+                                                            <dl class="dlist-inline small">
+                                                                <dt>{{ ucwords($item->$key) }}</dt>
+                                                                <dd>{{ ucwords($item->size) }}</dd>
+                                                            </dl>
+                                                        @endif
+                                                    </figcaption>
+                                                </figure>
+                                            </td>
+                                            <td>
+                                                <var class="price">{{ $item->quantity }}</var>
+                                            </td>
+                                            <td>
+                                                <div class="price-wrap">
+                                                    <var class="price">
+                                                        {{ number_format($item->price, 2) . config('settings.currency_symbol') }}
+                                                    </var>
+                                                    <small class="text-muted">each</small>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <a href="{{ route('cart.remove.dataindb', $item->id) }}"
                                                     class="btn btn-outline-danger">
                                                     <i class="fa fa-times"></i>
                                                 </a>
@@ -79,15 +142,17 @@
                     @endif
                 </main>
 
-                @if (!Cart::isEmpty())
+                {{-- @if (!Cart::isEmpty()) --}}
+                @if ($sum_cart !== 0)
                     <aside class="col-sm-3">
-                        <a href="{{ route('checkout.cart.clear') }}" class="btn btn-danger btn-block mb-4">Clear Cart</a>
+                        {{-- <a href="{{ route('cart.clear.session') }}" class="btn btn-danger btn-block mb-4">Clear Cart</a> --}}
+                        <a href="{{ route('cart.clear.dataindb') }}" class="btn btn-danger btn-block mb-4">Clear Cart</a>
                         <dl class="dlist-align h4">
                             <dt>Total:</dt>
                             <dd class="text-right">
                                 <strong>
-                                    {{ number_format(\Cart::getSubTotal(), 2) . config('settings.currency_symbol') }}
-                                    {{-- FIX TOTAL PRICE HERE --}}
+                                    {{-- {{ number_format(\Cart::getSubTotal(), 2) . config('settings.currency_symbol') }} --}}
+                                    {{ number_format($sum_cart, 2) . config('settings.currency_symbol') }}
                                 </strong>
                             </dd>
                         </dl>
@@ -175,7 +240,8 @@
                             </div>
                         </figure>
 
-                        @if ((int) Cart::getSubTotal() !== 0)
+                        {{-- @if ((int) Cart::getSubTotal() !== 0) --}}
+                        @if ((int) $sum_cart !== 0)
                             <a href="{{ route('checkout.index') }}" class="btn btn-success btn-lg btn-block">
                                 Proceed To Checkout
                             </a>

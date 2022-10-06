@@ -90,7 +90,8 @@
                                         @endif
                                     </div>
                                     <hr>
-                                    <form action="{{ route('product.add.cart') }}" method="POST" role="form"
+                                    {{-- <form action="{{ route('product.cart.session') }}" method="POST" role="form"id="addToCart"> --}}
+                                    <form action="{{ route('product.cart.database') }}" method="POST" role="form"
                                         id="addToCart">
                                         @csrf
                                         <div class="row">

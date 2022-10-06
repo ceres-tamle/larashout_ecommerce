@@ -10,17 +10,40 @@ Report August
 Report September
 
 Report October
-    Monday, 4th October, 2022
-        0.5h - Meeting daily
-        1.5h - Fix product variant price (continue).
-        1.5h - Fix product variant price (continue).
-        2h - Tomia guide.
-        2h - Support company.
+    1st Week
+        Monday, 3th October, 2022
+            0.5h - Meeting daily.
+            1.5h - Product variant price (continue).
+            1.5h - Product variant price (continue).
+            2h - Tomia guide (Wordpress).
+            2h - Support company.
 
-    Tuesday, 5th October, 2022
-        2h - Update quantity if product existed.
-        1.5h - Update quantity if product existed.
-        2h - Waiting task.
-        2h - Support company.
+        Tuesday, 4th October, 2022
+            1h - Check product in cart.
+            1h - Check product attributes in cart.
+            1.5h - Add new if product existed.
+            1.5h - Update quantity if product, product attributes existed.
+            1.5h - Tomia guide (Wordpress).
+            1h - Support company.
 
-    Wednesday, 6th October, 2022
+        Wednesday, 5th October, 2022
+            2h - A cart belongs to a user.
+            2h - A cart belongs to a user.
+            0.5h - Different between Cookie & Session.
+            1.5h - Tomia guide (Freskdesk).
+            1.5h - Tomia guide (Freskdesk).
+
+        Thursday, 6th October, 2022
+            1.5h - A cart belongs to a user (continue).
+            1.5h - A cart belongs to a user (continue).
+            1.5h - A cart belongs to a user (continue).
+            1h - Tomia guide (Wordpress).
+            2h - Support company.
+
+        Friday, 7th October, 2022
+
+    2nd Week
+
+    3rd Week
+
+    4th Week

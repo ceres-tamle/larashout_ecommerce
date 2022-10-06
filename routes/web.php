@@ -34,15 +34,23 @@ Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('categ
 
 // Product
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
-Route::post('/product/add/cart', [ProductController::class, 'addToCart'])->name('product.add.cart');
 Route::post('/product/variant/price', [ProductController::class, 'variantPrice'])->name('product.variant.price');
 
 // Cart
 Route::get('/cart', [CartController::class, 'getCart'])->name('checkout.cart');
-Route::get('/cart/item/{id}/remove', [CartController::class, 'removeItem'])->name('checkout.cart.remove');
-Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('checkout.cart.clear');
+// Session
+Route::get('/cart/remove/session/{id}', [CartController::class, 'removeSession'])->name('cart.remove.session');
+Route::get('/cart/clear/session', [CartController::class, 'clearSession'])->name('cart.clear.session');
+// Database
+Route::get('/cart/remove/dataindb/{id}', [CartController::class, 'removeDataInDB'])->name('cart.remove.dataindb');
+Route::get('/cart/clear/dataindb', [CartController::class, 'clearDataInDB'])->name('cart.clear.dataindb');
 
 Route::group(['middleware' => ['auth']], function () {
+    // Product
+    // Session
+    Route::post('/product/cart/session', [ProductController::class, 'addToCartBySession'])->name('product.cart.session');
+    // Database
+    Route::post('/product/cart/database', [ProductController::class, 'addToCartByDB'])->name('product.cart.database');
 
     // Coupon
     Route::post('/coupon/check', [CouponController::class, 'checkCoupon'])->name('coupon.check');
