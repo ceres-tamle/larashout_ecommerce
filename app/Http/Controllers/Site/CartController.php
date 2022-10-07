@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Site;
 
-use App\Contracts\AttributeContract;
+use App\Contracts\CartContract;
 use App\Contracts\ProductContract;
 use App\Http\Controllers\Controller;
 use App\Models\CartItems;
@@ -12,12 +12,10 @@ use Cart;
 class CartController extends Controller
 {
     protected $productRepository;
-    protected $attributeRepository;
 
-    public function __construct(ProductContract $productRepository, AttributeContract $attributeRepository)
+    public function __construct(ProductContract $productRepository)
     {
         $this->productRepository = $productRepository;
-        $this->attributeRepository = $attributeRepository;
     }
 
     public function getCart()

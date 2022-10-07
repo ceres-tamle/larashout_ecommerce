@@ -97,6 +97,8 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <dl class="dlist-inline">
+                                                    <input type="hidden" name="idd" value="{{ $product->id }}">
+                                                    {{-- <input type="hidden" name="slug" value="{{ $product->slug }}"> --}}
                                                     @foreach ($attributes as $attribute)
                                                         @php $attributeCheck = in_array($attribute->id, $product->attributes->pluck('attribute_id')->toArray()) @endphp
                                                         @if ($attributeCheck)
@@ -176,6 +178,7 @@
             });
 
             $('.option').change(function() {
+                var idd = $('input[name="idd"]').val();
                 var capacity = $('select[name="capacity"]').val();
                 var materials = $('select[name="materials"]').val();
                 var color = $('select[name="color"]').val();
@@ -184,12 +187,14 @@
                 console.log(materials);
                 console.log(color);
                 console.log(size);
+                console.log(idd);
 
                 var form_data = {
                     'capacity': capacity,
                     'materials': materials,
                     'color': color,
                     'size': size,
+                    'idd': idd,
                 };
 
                 $.ajaxSetup({

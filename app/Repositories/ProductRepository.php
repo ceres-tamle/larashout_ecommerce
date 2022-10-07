@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Product;
 use App\Traits\UploadAble;
-use Illuminate\Http\UploadedFile;
 use App\Contracts\ProductContract;
+use App\Models\ProductAttribute;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
@@ -141,14 +141,98 @@ class ProductRepository extends BaseRepository implements ProductContract
     public function filterProductByDescPrice()
     {
         $descPrice = DB::table('products')->orderBy('price', 'desc')->get();
-        // dd($descprice);
         return $descPrice;
     }
 
     public function filterProductByAscPrice()
     {
         $ascPrice = DB::table('products')->orderBy('price', 'asc')->get();
-        // dd($ascPrice);
         return $ascPrice;
+    }
+
+    public function findIdByProductIdAndValue($product, $key)
+    {
+        $value = ProductAttribute::select('id')
+            ->where('product_id', $product->id)
+            ->where('value', $key)->first();
+
+        return $value;
+    }
+
+    public function concatenateAttributesWithId($key)
+    {
+        if (isset($key->id)) {
+            $value = $key->id;
+        } else {
+            $value = '00';
+        }
+
+        return $value;
+    }
+
+    public function concatenateAllAttributes($request, $product, $ca_val, $ma_val, $co_val, $si_val)
+    {
+        // find id by product id and attributes value in product attributes table
+        $capacity_id = $this->findIdByProductIdAndValue($product, $ca_val);
+        $materials_id = $this->findIdByProductIdAndValue($product, $ma_val);
+        $color_id = $this->findIdByProductIdAndValue($product, $co_val);
+        $size_id = $this->findIdByProductIdAndValue($product, $si_val);
+
+        // concatenate attributes with id
+        $capacity_idd = $this->concatenateAttributesWithId($capacity_id);
+        $materials_idd = $this->concatenateAttributesWithId($materials_id);
+        $color_idd = $this->concatenateAttributesWithId($color_id);
+        $size_idd = $this->concatenateAttributesWithId($size_id);
+
+        // concatenate all attributes
+        if (isset($capacity_idd) || isset($materials_idd) || isset($color_idd) || isset($size_idd)) {
+            $product_id = $product->id
+                . ('-ca' . $capacity_idd)
+                . ('-ma' . $materials_idd)
+                . ('-co' . $color_idd)
+                . ('-si' . $size_idd);
+        } else {
+            $product_id = $product->id . '-no';
+        }
+
+        return $product_id;
+    }
+
+    public function findPriceByProductIdAndValue($product, $key)
+    {
+        $value = ProductAttribute::select('price')
+            ->where('product_id', $product->id)
+            ->where('value', $key)->first();
+
+        return $value;
+    }
+
+    public function productAttributesPrice($product, $ca_val, $ma_val, $co_val, $si_val)
+    {
+        $capacity_price = $this->findPriceByProductIdAndValue($product, $ca_val);
+        $materials_price = $this->findPriceByProductIdAndValue($product, $ma_val);
+        $color_price = $this->findPriceByProductIdAndValue($product, $co_val);
+        $size_price = $this->findPriceByProductIdAndValue($product, $si_val);
+
+        if ($ca_val !== null || $ma_val !== null || $co_val !== null || $si_val !== null) { // if product has variant
+
+            if ($product->sale_price !== null) { // if product has sale_price
+                $total_unit_price = $product->sale_price
+                    + ($capacity_price ? $capacity_price->price : 0)
+                    + ($materials_price ? $materials_price->price : 0)
+                    + ($color_price ? $color_price->price : 0)
+                    + ($size_price ? $size_price->price : 0);
+            } else { // if product has no sale_price
+                $total_unit_price = $product->price
+                    + ($capacity_price ? $capacity_price->price : 0)
+                    + ($materials_price ? $materials_price->price : 0)
+                    + ($color_price ? $color_price->price : 0)
+                    + ($size_price ? $size_price->price : 0);
+            }
+        } elseif ($ca_val === null && $ma_val === null && $co_val === null && $si_val === null) { // if product has no variant
+            $total_unit_price = $product->sale_price != '' ? $product->sale_price : $product->price;
+        }
+
+        return $total_unit_price;
     }
 }

@@ -51,4 +51,14 @@ interface ProductContract
     public function filterProductByDescPrice();
 
     public function filterProductByAscPrice();
+
+    public function findIdByProductIdAndValue($product, $key);
+
+    public function concatenateAttributesWithId($key);
+
+    public function concatenateAllAttributes($request, $product, $ca_val, $ma_val, $co_val, $si_val);
+
+    public function findPriceByProductIdAndValue($product, $key);
+
+    public function productAttributesPrice($product, $ca_val, $ma_val, $co_val, $si_val);
 }
