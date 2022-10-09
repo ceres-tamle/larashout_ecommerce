@@ -6,6 +6,7 @@ use App\Contracts\ProductContract;
 use App\Contracts\AttributeContract;
 use App\Http\Controllers\Controller;
 use App\Models\CartItems;
+use App\Repositories\CartRepository;
 use Auth;
 use Illuminate\Http\Request;
 use Cart;
@@ -14,11 +15,13 @@ class ProductController extends Controller
 {
     protected $productRepository;
     protected $attributeRepository;
+    protected $cartRepository;
 
-    public function __construct(ProductContract $productRepository, AttributeContract $attributeRepository)
+    public function __construct(ProductContract $productRepository, AttributeContract $attributeRepository, CartRepository $cartRepository)
     {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->cartRepository = $cartRepository;
     }
 
     public function show($slug)
@@ -84,6 +87,8 @@ class ProductController extends Controller
     // handle price, quantity to display in cart
     public function addToCartByDB(Request $request)
     {
+        $this->cartRepository->clearCouponSession(); // clear session coupon
+
         $product = $this->productRepository->findProductById($request->input('productId'));
 
         // take value when user select option
@@ -103,7 +108,8 @@ class ProductController extends Controller
         $cart_item = CartItems::where('product_id', $product_id)->count();
         if ($cart_item > 0) { // update product quantity in cart
             $item = CartItems::where('product_id', $product_id)->first();
-            $item->quantity = $item->quantity + 1;
+            $item->quantity = $item->quantity + $qty_val;
+            $item->grand_total = $item->grand_total + ($total_unit_price * $qty_val);
             $item->save();
         } elseif ($cart_item === 0) { // add new product to cart
             CartItems::create([
@@ -116,7 +122,7 @@ class ProductController extends Controller
                 'quantity' => $qty_val,
                 'price' => $total_unit_price,
                 'discount' => 0,
-                'grand_total' => $product->price * $qty_val,
+                'grand_total' => ($total_unit_price * $qty_val),
                 'user_id' => Auth::id(),
             ]);
         }

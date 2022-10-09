@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Contracts\BaseContract;
 use App\Models\Brand;
 use App\Traits\UploadAble;
 use Illuminate\Http\UploadedFile;
@@ -10,7 +9,6 @@ use App\Contracts\BrandContract;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use Faker\Provider\Base;
 
 /**
  * Class CategoryRepository

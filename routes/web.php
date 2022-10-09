@@ -39,11 +39,11 @@ Route::post('/product/variant/price', [ProductController::class, 'variantPrice']
 // Cart
 Route::get('/cart', [CartController::class, 'getCart'])->name('checkout.cart');
 // Session
-Route::get('/cart/remove/session/{id}', [CartController::class, 'removeSession'])->name('cart.remove.session');
-Route::get('/cart/clear/session', [CartController::class, 'clearSession'])->name('cart.clear.session');
+Route::get('/cart/remove/session/{id}', [CartController::class, 'removeSessionCart'])->name('cart.remove.session');
+Route::get('/cart/clear/session', [CartController::class, 'clearSessionCart'])->name('cart.clear.session');
 // Database
-Route::get('/cart/remove/dataindb/{id}', [CartController::class, 'removeDataInDB'])->name('cart.remove.dataindb');
-Route::get('/cart/clear/dataindb', [CartController::class, 'clearDataInDB'])->name('cart.clear.dataindb');
+Route::get('/cart/remove/dataindb/{id}', [CartController::class, 'removeCartInDB'])->name('cart.remove.dataindb');
+Route::get('/cart/clear/dataindb', [CartController::class, 'clearCartInDB'])->name('cart.clear.dataindb');
 
 Route::group(['middleware' => ['auth']], function () {
     // Product

@@ -1,3 +1,4 @@
+{{-- @dd($sum_cart) --}}
 @extends('site.app')
 @section('title', 'Checkout')
 @section('content')
@@ -10,9 +11,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12">
-                    @if (Session::has('error'))
-                        <p class="alert alert-danger">{{ Session::get('error') }}</p>
-                    @endif
+                    {{-- notify --}}
                 </div>
             </div>
             <form action="{{ route('checkout.place.order') }}" method="POST" role="form">
@@ -129,12 +128,12 @@
                                         <dl class="dlist-align">
                                             <dt>Total cost: </dt>
                                             <dd class="text-right h5 b">
-                                                @if (Session::get('pay_percent') !== null)
-                                                    {{ Session::get('pay_percent') }} đ
-                                                @elseif (Session::get('pay_value') !== null)
-                                                    {{ Session::get('pay_value') }} đ
+                                                @if (Session::get('pay') !== null)
+                                                    {{ number_format(Session::get('pay'), 2) }}
+                                                    {{ config('settings.currency_symbol') }}
                                                 @else
-                                                    {{ Cart::getSubTotal() }} {{ config('settings.currency_symbol') }}
+                                                    {{ number_format($sum_cart, 2) }}
+                                                    {{ config('settings.currency_symbol') }}
                                                 @endif
                                             </dd>
                                         </dl>
@@ -142,7 +141,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 mt-4">
-                                @if ((int) Cart::getSubTotal() !== 0)
+                                @if ($sum_cart > 0)
                                     <button type="submit" class="subscribe btn btn-success btn-lg btn-block"> Place Order
                                     </button>
                                 @else

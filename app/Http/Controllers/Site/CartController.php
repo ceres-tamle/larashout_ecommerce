@@ -6,30 +6,32 @@ use App\Contracts\CartContract;
 use App\Contracts\ProductContract;
 use App\Http\Controllers\Controller;
 use App\Models\CartItems;
-use Illuminate\Http\Request;
+use Auth;
 use Cart;
 
 class CartController extends Controller
 {
     protected $productRepository;
+    protected $cartRepository;
 
-    public function __construct(ProductContract $productRepository)
+    public function __construct(ProductContract $productRepository, CartContract $cartRepository)
     {
         $this->productRepository = $productRepository;
+        $this->cartRepository = $cartRepository;
     }
 
     public function getCart()
     {
-        $cart_items = CartItems::all();
-        $sum_cart = CartItems::sum('grand_total');
+        $cart_items = CartItems::all()->where('user_id', Auth::id());
+        $sum_cart = CartItems::where('user_id', Auth::id())->sum('grand_total');
         return view('site.pages.cart', compact('cart_items', 'sum_cart'));
     }
 
     // Removing Item from Shopping Cart
-    public function removeSession($id)
+    public function removeSessionCart($id)
     {
         Cart::remove($id);
-
+        $this->cartRepository->clearCouponSession();
         if (Cart::isEmpty()) {
             return redirect('/');
         }
@@ -37,29 +39,24 @@ class CartController extends Controller
     }
 
     // Clearing Shopping Cart
-    public function clearSession(Request $request)
+    public function clearSessionCart()
     {
         Cart::clear();
-
-        // Session::forget('coupon_code');
-        $request->session()->forget('coupon_code');
-        $request->session()->forget('discount_percent');
-        $request->session()->forget('discount_value');
-        $request->session()->forget('pay_percent');
-        $request->session()->forget('pay_value');
-
+        $this->cartRepository->clearCouponSession();
         return redirect('/');
     }
 
-    public function removeDataInDB($id)
+    public function removeCartInDB($id)
     {
         CartItems::find($id)->delete();
+        $this->cartRepository->clearCouponSession();
         return redirect()->back()->with('message', 'Item removed from cart successfully.');
     }
 
-    public function clearDataInDB()
+    public function clearCartInDB()
     {
-        CartItems::truncate();
+        CartItems::where('user_id', Auth::id())->delete();
+        $this->cartRepository->clearCouponSession();
         return redirect('/');
     }
 }

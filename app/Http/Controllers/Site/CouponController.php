@@ -2,18 +2,27 @@
 
 namespace App\Http\Controllers\Site;
 
+use App\Contracts\CartContract;
 use App\Http\Controllers\Controller;
+use App\Models\CartItems;
 use App\Models\Coupon;
+use Auth;
 use Illuminate\Http\Request;
 use Session;
-use Cart;
 
 class CouponController extends Controller
 {
+    protected $cartRepository;
+
+    public function __construct(CartContract $cartRepository)
+    {
+        $this->cartRepository = $cartRepository;
+    }
+
     public function checkCoupon(Request $request)
     {
         $coupon_code = $request->input('coupon_code');
-        Session::put('code', $coupon_code); // use this session in blade
+        Session::put('code', $coupon_code); // use this session in CheckoutController to update active
 
         $coupon = Coupon::where('code', $coupon_code)
             ->where('active', 1)
@@ -25,43 +34,87 @@ class CouponController extends Controller
                 if ($coupon_session == true) {
                     $is_avaiable = 0;
                     if ($is_avaiable == 0) {
-                        $cou[] = array(
+                        $coupon_array[] = array(
                             'code' => $coupon->code,
+                            'time' => $coupon->time,
                             'condition' => $coupon->condition,
                             'discount' => $coupon->discount,
                         );
                     }
                 } else {
-                    $cou[] = array(
+                    $coupon_array[] = array(
                         'code' => $coupon->code,
+                        'time' => $coupon->time,
                         'condition' => $coupon->condition,
                         'discount' => $coupon->discount,
-                    ); // dd($cou);
-                    Session::put('coupon_code', $cou);
+                    );
 
-                    foreach (Session::get('coupon_code') as $key => $coupon) {
-                        // DISCOUNT
-                        if (Session::get('coupon_code') !== null) {
-                            if (isset($coupon['condition'])  && $coupon['condition'] === 1) {
-                                $discount = (Cart::getSubTotal() * $coupon['discount']) / 100;
-                                // create session name 'discount_percent' with value $discount
-                                Session::put('discount_percent', $discount);
-                            } elseif (isset($coupon['condition']) && $coupon['condition'] === 2) {
-                                // create session name 'discount_value' with value $coupon['discount']
-                                Session::put('discount_value', $coupon['discount']);
-                            }
-                        }
+                    // SESSION
+                    // foreach ($coupon_array as $key => $coupon) {
+                    //     if ($coupon['code'] !== null) {
 
-                        // PAY
-                        if (Session::get('coupon_code') !== null) {
-                            if (isset($coupon['condition']) && $coupon['condition'] === 1) {
-                                $pay = Cart::getSubTotal() - $discount;
-                                // create session name 'pay_percent' with value $pay
-                                Session::put('pay_percent', $pay);
-                            } elseif (isset($coupon['condition']) && $coupon['condition'] === 2) {
-                                $pay = Cart::getSubTotal() - $coupon['discount'];
-                                // create session name 'pay_value' with value $pay
-                                Session::put('pay_value', $pay);
+                    //         Session::put('coupon_code', $coupon['code']);
+
+                    //         if (isset($coupon['condition']) && $coupon['condition'] === 1) { // if condition = percent
+
+                    //             // COUPON PERCENT
+                    //             Session::put('type', number_format($coupon['discount'], 2) . "%");
+
+                    //             // DISCOUNT PERCENT
+                    //             $discount = (Cart::getSubTotal() * $coupon['discount']) / 100;
+                    //             Session::put('discount', $discount);
+
+                    //             // PAY PERCENT
+                    //             $pay = Cart::getSubTotal() - $discount;
+                    //             Session::put('pay', $pay);
+                    //         } elseif (isset($coupon['condition']) && $coupon['condition'] === 2) { // if condition = value
+
+                    //             // COUPON VALUE
+                    //             Session::put('type', number_format($coupon['discount'], 2)
+                    //                 . config('settings.currency_symbol'));
+
+                    //             // DISCOUNT VALUE
+                    //             Session::put('discount', $coupon['discount']);
+
+                    //             // PAY VALUE
+                    //             $pay = Cart::getSubTotal() - $coupon['discount'];
+                    //             Session::put('pay', $pay);
+                    //         }
+                    //     }
+                    // }
+
+                    // DATABASE
+                    foreach ($coupon_array as $key => $coupon) {
+                        if ($coupon['code'] !== null) {
+
+                            $sum_cart = CartItems::where('user_id', Auth::id())->sum('grand_total');
+
+                            Session::put('coupon_code', $coupon['code']);
+
+                            if (isset($coupon['condition']) && $coupon['condition'] === 1) { // if condition = percent
+
+                                // COUPON PERCENT
+                                Session::put('type', number_format($coupon['discount'], 2) . "%");
+
+                                // DISCOUNT PERCENT
+                                $discount = ($sum_cart * $coupon['discount']) / 100;
+                                Session::put('discount', $discount);
+
+                                // PAY PERCENT
+                                $pay = $sum_cart - $discount;
+                                Session::put('pay', $pay);
+                            } elseif (isset($coupon['condition']) && $coupon['condition'] === 2) { // if condition = value
+
+                                // COUPON VALUE
+                                Session::put('type', number_format($coupon['discount'], 2)
+                                    . config('settings.currency_symbol'));
+
+                                // DISCOUNT VALUE
+                                Session::put('discount', $coupon['discount']);
+
+                                // PAY VALUE
+                                $pay = $sum_cart - $coupon['discount'];
+                                Session::put('pay', $pay);
                             }
                         }
                     }
@@ -74,14 +127,9 @@ class CouponController extends Controller
         }
     }
 
-    public function cancelCoupon(Request $request)
+    public function cancelCoupon()
     {
-        $request->session()->forget('coupon_code');
-        $request->session()->forget('discount_percent');
-        $request->session()->forget('discount_value');
-        $request->session()->forget('pay_percent');
-        $request->session()->forget('pay_value');
-
+        $this->cartRepository->clearCouponSession();
         return redirect('/cart');
     }
 }

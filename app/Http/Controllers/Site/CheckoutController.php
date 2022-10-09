@@ -5,22 +5,27 @@ namespace App\Http\Controllers\Site;
 use App\Contracts\OrderContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckoutFormRequest;
+use App\Models\CartItems;
 use App\Models\Coupon;
-use Cart;
+use App\Repositories\CartRepository;
+use Auth;
 use Session;
 
 class CheckoutController extends Controller
 {
     protected $orderRepository;
+    protected $cartRepository;
 
-    public function __construct(OrderContract $orderRepository)
+    public function __construct(OrderContract $orderRepository, CartRepository $cartRepository)
     {
         $this->orderRepository = $orderRepository;
+        $this->cartRepository = $cartRepository;
     }
 
     public function getCheckout()
     {
-        return view('site.pages.checkout');
+        $sum_cart = CartItems::where('user_id', Auth::id())->sum('grand_total');
+        return view('site.pages.checkout', compact('sum_cart'));
     }
 
     public function placeOrder(CheckoutFormRequest $request)
@@ -28,20 +33,13 @@ class CheckoutController extends Controller
         $this->orderRepository->storeOrderDetails($request->all());
 
         // Update active
-        $coupon_code = Session::get('code');
+        $coupon_code = Session::get('code'); // value from CouponController
 
-        $time_coupon = Coupon::select('time')->where('code', $coupon_code)->first();
-        Session::put('time_coupon', $time_coupon->time);
-        // dd(Session::get('time_coupon'));
+        $coupon_time = Coupon::select('time')->where('code', $coupon_code)->first();
 
-        $time = Session::get('time_coupon');
-        // dd($time);
-
-        if (isset($time_coupon) && $time === 1) { // if coupon time = 1
+        if (isset($coupon_time->time) && $coupon_time->time === 1) { // if coupon time = 1
 
             $active = Coupon::select('id')->where('code', $coupon_code)->first();
-            // dd($active);
-
             // $active = Coupon::findOrFail($id);
             // dd($active);
 
@@ -51,14 +49,10 @@ class CheckoutController extends Controller
             }
         }
 
-        Cart::clear();
+        // Cart::clear();
+        CartItems::where('user_id', Auth::id())->delete();
 
-        // Session::forget('coupon_code');
-        $request->session()->forget('coupon_code');
-        $request->session()->forget('discount_percent');
-        $request->session()->forget('discount_value');
-        $request->session()->forget('pay_percent');
-        $request->session()->forget('pay_value');
+        $this->cartRepository->clearCouponSession();
 
         return redirect('/');
     }

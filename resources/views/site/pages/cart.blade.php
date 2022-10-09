@@ -84,12 +84,6 @@
                                                         <h6 class="title text-truncate">
                                                             {{ Str::words($item->name, 20) }}
                                                         </h6>
-                                                        {{-- @foreach ($item->attributes as $key => $value)
-                                                            <dl class="dlist-inline small">
-                                                                <dt>{{ ucwords($key) }}: </dt>
-                                                                <dd>{{ ucwords($value) }}</dd>
-                                                            </dl>
-                                                        @endforeach --}}
                                                         @if ($item->capacity !== null)
                                                             <dl class="dlist-inline small">
                                                                 <dt>{{ ucwords($item->$key) }}</dt>
@@ -162,16 +156,8 @@
                                 <dt>Coupon:</dt>
                                 <dd class="text-right">
                                     <strong>
-                                        @if (Session::get('coupon_code'))
-                                            @foreach (Session::get('coupon_code') as $key => $coupon)
-                                                {{-- Discount Percent --}}
-                                                @if (isset($coupon['condition']) && $coupon['condition'] == 1)
-                                                    {{ number_format($coupon['discount'], 2) }} %
-                                                    {{-- Discount Value --}}
-                                                @elseif(isset($coupon['condition']) && $coupon['condition'] == 2)
-                                                    {{ number_format($coupon['discount'], 2) . config('settings.currency_symbol') }}
-                                                @endif
-                                            @endforeach
+                                        @if (Session::get('type') !== null)
+                                            {{ Session::get('type') }}
                                         @endif
                                     </strong>
                                 </dd>
@@ -181,10 +167,8 @@
                                 <dt>Discount:</dt>
                                 <dd class="text-right">
                                     <strong>
-                                        @if (Session::get('discount_percent') !== null)
-                                            {{ number_format(Session::get('discount_percent'), 2) . config('settings.currency_symbol') }}
-                                        @elseif (Session::get('discount_value') !== null)
-                                            {{ number_format(Session::get('discount_value'), 2) . config('settings.currency_symbol') }}
+                                        @if (Session::get('discount') !== null)
+                                            {{ number_format(Session::get('discount'), 2) . config('settings.currency_symbol') }}
                                         @endif
                                     </strong>
                                 </dd>
@@ -194,10 +178,8 @@
                                 <dt>Pay:</dt>
                                 <dd class="text-right">
                                     <strong>
-                                        @if (Session::get('pay_percent') !== null)
-                                            {{ number_format(Session::get('pay_percent'), 2) . config('settings.currency_symbol') }}
-                                        @elseif (Session::get('pay_value') !== null)
-                                            {{ number_format(Session::get('pay_value'), 2) . config('settings.currency_symbol') }}
+                                        @if (Session::get('pay') !== null)
+                                            {{ number_format(Session::get('pay'), 2) . config('settings.currency_symbol') }}
                                         @endif
                                     </strong>
                                 </dd>
